@@ -1,6 +1,6 @@
 require('module-alias/register');
 
-const config = require('@config/app.config');
+const config = require('@config');
 const app = require('@src/app');
 
 app.listen(config.port, () => {

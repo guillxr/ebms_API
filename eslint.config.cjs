@@ -20,7 +20,7 @@ module.exports = [
         module: true,
         require: true,
         __dirname: true,
-        config: true
+        config: true,
       },
     },
     plugins: {
@@ -30,10 +30,20 @@ module.exports = [
       'unused-imports': unusedImports,
     },
     rules: {
-      'import/order': ['error', {
-        groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
-        'newlines-between': 'always',
-      }],
+      'import/order': [
+        'error',
+        {
+          groups: [
+            'builtin',
+            'external',
+            'internal',
+            'parent',
+            'sibling',
+            'index',
+          ],
+          'newlines-between': 'always',
+        },
+      ],
       'unused-imports/no-unused-imports': 'error',
       'unused-imports/no-unused-vars': [
         'warn',
