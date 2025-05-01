@@ -16,6 +16,8 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 package-lock.json
 
+.husky/
+
 # Runtime data
 pids
 *.pid
