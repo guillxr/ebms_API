@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Donor {
+  id                  String    @id @default(uuid())
+  name                String
+  birth_date          DateTime
+  blood_type          BloodType
+  gender              Gender
+  phone               String
+  email               String    @unique
+  identity_document   String    @unique
+  address             String
+  latitude            Float?
+  longitude           Float?
+  last_donation       DateTime?
+  donation_history    DateTime[] @default([])
+  donation_frequency  Int       @default(0)
+  eligibility_status  Boolean   @default(false)
+  contact_preferences ContactPreference[] @default([])
+  registration_date   DateTime  @default(now())
+  update_date         DateTime  @updatedAt
+
+  @@index([blood_type])
+  @@index([eligibility_status])
+  @@index([latitude, longitude])
+}
+
+enum BloodType {
+  A_POSITIVO   @map("A+")
+  A_NEGATIVO   @map("A-")
+  B_POSITIVO   @map("B+")
+  B_NEGATIVO   @map("B-")
+  AB_POSITIVO  @map("AB+")
+  AB_NEGATIVO  @map("AB-")
+  O_POSITIVO   @map("O+")
+  O_NEGATIVO   @map("O-")
+}
+
+enum Gender {
+  Masculino
+  Feminino
+  Outro
+}
+
+enum ContactPreference {
+  email
+  sms
+  whatsapp
+  call
+}
