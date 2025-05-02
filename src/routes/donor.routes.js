@@ -1,3 +1,34 @@
+/**
+ * @module DonorRouter
+ * 
+ * This module defines the routing for the donor management API. It handles the HTTP requests 
+ * for creating, retrieving, updating, and deleting donor records, and validates the request 
+ * data using middlewares. The routes interact with the donor controller to process the donor data.
+ * 
+ * @requires module:express - The Express library for routing.
+ * @requires module:@controllers/donor.controller - The controller that handles the logic for donor operations.
+ * @requires module:@middlewares/validateRequest.middleware - The middleware to validate incoming requests.
+ * 
+ * @example
+ * // To use this router, you should require and use it in your Express application:
+ * const donorRouter = require('@routes/donor.routes');
+ * app.use('/donors', donorRouter);
+ */
+
+/**
+ * Router for managing donor data in the system.
+ * 
+ * This router exposes several routes to handle donor-related operations:
+ * - POST /: Create a new donor
+ * - GET /: Get a list of all donors
+ * - GET /:id: Get donor details by ID
+ * - GET /blood-type/:bloodType: Get donors by blood type
+ * - PUT /:id: Update donor details
+ * - DELETE /:id: Delete a donor
+ * 
+ * @namespace DonorRouter
+ */
+
 const express = require('express');
 const router = express.Router();
 const donorController = require('@controllers/donor.controller');
@@ -20,6 +51,33 @@ const validBloodTypes = [
   'O_NEGATIVO',
 ];
 
+/**
+ * Route to create a new donor.
+ * 
+ * This route validates the provided donor data (name, birth date, blood type, gender, etc.) 
+ * before passing it to the donor controller for creation.
+ * 
+ * @function
+ * @name POST /
+ * @memberof DonorRouter
+ * @param {Object} data - The donor data to be validated and created.
+ * @param {string} data.name - The full name of the donor.
+ * @param {string} data.birth_date - The birth date of the donor (ISO format).
+ * @param {string} data.blood_type - The blood type of the donor.
+ * @param {string} data.gender - The gender of the donor.
+ * @param {string} data.phone - The phone number of the donor.
+ * @param {string} data.email - The email address of the donor.
+ * @param {string} data.identity_document - The ID document of the donor.
+ * @param {string} data.address - The address of the donor.
+ * @param {number} [data.latitude] - The latitude of the donor's location.
+ * @param {number} [data.longitude] - The longitude of the donor's location.
+ * @param {string} [data.last_donation] - The last donation date (ISO format).
+ * @param {number} [data.donation_frequency] - The donation frequency preference of the donor.
+ * @param {boolean} [data.eligibility_status] - The eligibility status of the donor.
+ * @param {Array} [data.contact_preferences] - The contact preferences of the donor (e.g., 'email', 'sms').
+ * @throws {ValidationError} If any of the required fields are missing or invalid.
+ * @returns {Promise<Object>} The created donor object.
+ */
 router.post(
   '/',
   validate([
@@ -131,14 +189,40 @@ router.post(
   donorController.create
 );
 
+/**
+ * Route to retrieve all donors.
+ * 
+ * @function
+ * @name GET /
+ * @memberof DonorRouter
+ * @returns {Promise<Array>} A list of all donors in the system.
+ */
 router.get('/', donorController.getAll);
 
+/**
+ * Route to retrieve a donor by their ID.
+ * 
+ * @function
+ * @name GET /:id
+ * @memberof DonorRouter
+ * @param {string} id - The ID of the donor to retrieve.
+ * @returns {Promise<Object>} The donor data for the given ID.
+ */
 router.get(
   '/:id',
   validate([param('id').isUUID().withMessage('ID must be a valid UUID')]),
   donorController.getById
 );
 
+/**
+ * Route to retrieve donors by blood type.
+ * 
+ * @function
+ * @name GET /blood-type/:bloodType
+ * @memberof DonorRouter
+ * @param {string} bloodType - The blood type of the donors to retrieve.
+ * @returns {Promise<Array>} A list of donors with the specified blood type.
+ */
 router.get(
   '/blood-type/:bloodType',
   validate([
@@ -151,6 +235,16 @@ router.get(
   donorController.getByBloodType
 );
 
+/**
+ * Route to update a donor's details.
+ * 
+ * @function
+ * @name PUT /:id
+ * @memberof DonorRouter
+ * @param {string} id - The ID of the donor to update.
+ * @param {Object} data - The donor data to update.
+ * @returns {Promise<Object>} The updated donor object.
+ */
 router.put(
   '/:id',
   validate([
@@ -197,6 +291,15 @@ router.put(
   donorController.update
 );
 
+/**
+ * Route to delete a donor by their ID.
+ * 
+ * @function
+ * @name DELETE /:id
+ * @memberof DonorRouter
+ * @param {string} id - The ID of the donor to delete.
+ * @returns {Promise<void>} A promise indicating the donor has been deleted.
+ */
 router.delete(
   '/:id',
   validate([param('id').isUUID().withMessage('ID must be a valid UUID')]),
