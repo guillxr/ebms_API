@@ -45,6 +45,10 @@ module.exports = [
         },
       ],
       'unused-imports/no-unused-imports': 'error',
+      'no-unused-vars': [
+        'error',
+        { vars: 'all', varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
+      ],
       'unused-imports/no-unused-vars': [
         'warn',
         { vars: 'all', varsIgnorePattern: '^_', argsIgnorePattern: '^_' },

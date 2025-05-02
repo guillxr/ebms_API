@@ -1,4 +1,4 @@
-const { log } = require('@utils/logger');
+const log = require('@utils/logger');
 const config = require('@config');
 
 const debugLogger = (req, res, next) => {

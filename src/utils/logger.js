@@ -1,3 +1,5 @@
+const config = require('@config');
+
 const log = (message, level = 'info') => {
   const levels = ['verbose', 'info', 'warn', 'error'];
 

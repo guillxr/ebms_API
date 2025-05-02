@@ -1,7 +1,7 @@
 const RATE_LIMITS = {
   DEFAULT: {
-    windowMs: 1 * 60 * 1000,
-    max: 2,
+    windowMs: 10 * 60 * 1000,
+    max: 40,
     message: 'Too many requests, please try again later.',
   },
 };
