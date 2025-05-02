@@ -10,7 +10,7 @@
     "prepare": "husky install",
     "ci": "npx eslint . --ext .js",
     "format": "prettier --write .",
-    "posinstall": "npx generate"
+    "posinstall": "npx prisma generate"
   },
   "_moduleAliases": {
     "@src": "src",

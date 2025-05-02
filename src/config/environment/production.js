@@ -4,7 +4,4 @@ module.exports = {
   port: 5000,
   debug: false,
   logging: 'error',
-  database: {
-    url: process.env.DB_URI || null,
-  },
 };
