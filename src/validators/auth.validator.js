@@ -1,4 +1,4 @@
-const { body } = require('@middlewares/validateRequest.middleware');
+const { body } = require('express-validator');
 
 const loginValidation = [
   body('username')

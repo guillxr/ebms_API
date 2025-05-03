@@ -1,17 +1,17 @@
 /**
  * @module DonorModel
- * 
- * This module handles interactions with the donor data in the database using Prisma ORM. 
- * It provides functions to create, retrieve, update, and delete donor records. 
+ *
+ * This module handles interactions with the donor data in the database using Prisma ORM.
+ * It provides functions to create, retrieve, update, and delete donor records.
  * The operations are logged for better traceability.
- * 
+ *
  * @requires module:@config - The configuration module where the Prisma client is initialized.
  * @requires module:@utils/logger - A utility for logging operations and errors.
  */
 
 /**
  * Donor model that interacts with the database.
- * 
+ *
  * This model provides several methods for handling donor records in the system:
  * - create: Add a new donor to the database.
  * - findAll: Retrieve all donors from the database.
@@ -19,7 +19,7 @@
  * - findByBloodType: Retrieve donors based on their blood type.
  * - update: Update an existing donor's details.
  * - delete: Remove a donor from the database.
- * 
+ *
  * @namespace Donor
  */
 const prisma = require('@config').prisma;
@@ -28,10 +28,10 @@ const log = require('@utils/logger');
 const Donor = {
   /**
    * Creates a new donor in the database.
-   * 
-   * This function creates a new donor record with the provided data and handles 
+   *
+   * This function creates a new donor record with the provided data and handles
    * the possibility of a unique constraint violation for the email field.
-   * 
+   *
    * @function
    * @name create
    * @memberof Donor
@@ -68,7 +68,7 @@ const Donor = {
 
   /**
    * Retrieves all donors from the database.
-   * 
+   *
    * @function
    * @name findAll
    * @memberof Donor
@@ -76,7 +76,7 @@ const Donor = {
    */
   findAll: async () => {
     try {
-      log('Finding all donors...', 'info'); 
+      log('Finding all donors...', 'info');
       return await prisma.donor.findMany();
     } catch (error) {
       log(`Prisma error on find all donors: ${error}`, 'error');
@@ -86,7 +86,7 @@ const Donor = {
 
   /**
    * Retrieves a donor by their ID.
-   * 
+   *
    * @function
    * @name findById
    * @memberof Donor
@@ -105,7 +105,7 @@ const Donor = {
 
   /**
    * Retrieves donors by their blood type.
-   * 
+   *
    * @function
    * @name findByBloodType
    * @memberof Donor
@@ -131,7 +131,7 @@ const Donor = {
 
   /**
    * Updates an existing donor's details.
-   * 
+   *
    * @function
    * @name update
    * @memberof Donor
@@ -154,7 +154,7 @@ const Donor = {
 
   /**
    * Deletes a donor from the database.
-   * 
+   *
    * @function
    * @name delete
    * @memberof Donor
@@ -164,6 +164,18 @@ const Donor = {
   delete: async (id) => {
     try {
       log(`Deleting donor with ID: ${id}...`, 'info');
+      const existingUser = await prisma.donor.findUnique({
+        where: { id },
+      });
+
+      if (!existingUser) {
+        log(
+          `Donor creation failed: username "${existingUser.name}" already exists`,
+          'warn'
+        );
+        throw new Error('User already exists');
+      }
+
       return await prisma.donor.delete({ where: { id } });
     } catch (error) {
       log(`Prisma error on delete: ${error}`, 'error');
