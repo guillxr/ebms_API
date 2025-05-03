@@ -117,10 +117,7 @@ const Donor = {
       log(`Finding donors with blood type: ${bloodType}...`, 'info');
       return await prisma.donor.findMany({
         where: {
-          blood_type: {
-            contains: bloodType,
-            mode: 'insensitive',
-          },
+          blood_type: bloodType,
         },
       });
     } catch (error) {
