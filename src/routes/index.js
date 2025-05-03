@@ -4,16 +4,23 @@
  */
 
 const donorRoutes = require('./donor.routes');
+const authRoutes = require('./auth.route');
 
 /**
- * Load all routes into the provided Express app.
- * 
- * This function sets up the route `/donors` to handle requests related to donor operations.
+ * Loads all route groups into the given Express app instance.
  *
+ * @function loadRoutes
+ * @memberof module:routes
  * @param {Object} app - The Express application instance.
+ *
+ * @description
+ * Registers the following route groups:
+ * - `/donors` → handles donor-related endpoints.
+ * - `/admins` → handles admin authentication and management endpoints.
  */
 const loadRoutes = (app) => {
   app.use('/donors', donorRoutes);
+  app.use('/admins', authRoutes);
 };
 
 module.exports = { loadRoutes };

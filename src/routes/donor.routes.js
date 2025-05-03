@@ -1,14 +1,14 @@
 /**
  * @module DonorRouter
- * 
- * This module defines the routing for the donor management API. It handles the HTTP requests 
- * for creating, retrieving, updating, and deleting donor records, and validates the request 
+ *
+ * This module defines the routing for the donor management API. It handles the HTTP requests
+ * for creating, retrieving, updating, and deleting donor records, and validates the request
  * data using middlewares. The routes interact with the donor controller to process the donor data.
- * 
+ *
  * @requires module:express - The Express library for routing.
  * @requires module:@controllers/donor.controller - The controller that handles the logic for donor operations.
  * @requires module:@middlewares/validateRequest.middleware - The middleware to validate incoming requests.
- * 
+ *
  * @example
  * // To use this router, you should require and use it in your Express application:
  * const donorRouter = require('@routes/donor.routes');
@@ -17,7 +17,7 @@
 
 /**
  * Router for managing donor data in the system.
- * 
+ *
  * This router exposes several routes to handle donor-related operations:
  * - POST /: Create a new donor
  * - GET /: Get a list of all donors
@@ -25,13 +25,14 @@
  * - GET /blood-type/:bloodType: Get donors by blood type
  * - PUT /:id: Update donor details
  * - DELETE /:id: Delete a donor
- * 
+ *
  * @namespace DonorRouter
  */
 
 const express = require('express');
 const router = express.Router();
 const donorController = require('@controllers/donor.controller');
+const { authenticateJWT } = require('@middlewares/authenticate.middleware');
 const {
   validate,
   body,
@@ -53,10 +54,10 @@ const validBloodTypes = [
 
 /**
  * Route to create a new donor.
- * 
- * This route validates the provided donor data (name, birth date, blood type, gender, etc.) 
+ *
+ * This route validates the provided donor data (name, birth date, blood type, gender, etc.)
  * before passing it to the donor controller for creation.
- * 
+ *
  * @function
  * @name POST /
  * @memberof DonorRouter
@@ -191,7 +192,7 @@ router.post(
 
 /**
  * Route to retrieve all donors.
- * 
+ *
  * @function
  * @name GET /
  * @memberof DonorRouter
@@ -201,7 +202,7 @@ router.get('/', donorController.getAll);
 
 /**
  * Route to retrieve a donor by their ID.
- * 
+ *
  * @function
  * @name GET /:id
  * @memberof DonorRouter
@@ -216,7 +217,7 @@ router.get(
 
 /**
  * Route to retrieve donors by blood type.
- * 
+ *
  * @function
  * @name GET /blood-type/:bloodType
  * @memberof DonorRouter
@@ -237,7 +238,7 @@ router.get(
 
 /**
  * Route to update a donor's details.
- * 
+ *
  * @function
  * @name PUT /:id
  * @memberof DonorRouter
@@ -288,12 +289,13 @@ router.put(
       .isLength({ min: 10, max: 200 })
       .withMessage('Address must be between 10 and 200 characters'),
   ]),
+  authenticateJWT,
   donorController.update
 );
 
 /**
  * Route to delete a donor by their ID.
- * 
+ *
  * @function
  * @name DELETE /:id
  * @memberof DonorRouter
@@ -303,6 +305,7 @@ router.put(
 router.delete(
   '/:id',
   validate([param('id').isUUID().withMessage('ID must be a valid UUID')]),
+  authenticateJWT,
   donorController.delete
 );
 

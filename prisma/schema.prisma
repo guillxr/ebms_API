@@ -13,6 +13,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Admin {
+  id                  String    @id @default(uuid())
+  username            String    @unique
+  password            String    
+  createAt            DateTime  @default(now())
+  updateAt            DateTime  @updatedAt
+}
+
 model Donor {
   id                  String    @id @default(uuid())
   name                String
