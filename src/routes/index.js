@@ -5,6 +5,7 @@
 
 const donorRoutes = require('./donor.routes');
 const authRoutes = require('./auth.route');
+const histBloodroutes = require('./histBlood.route');
 
 /**
  * Loads all route groups into the given Express app instance.
@@ -17,10 +18,12 @@ const authRoutes = require('./auth.route');
  * Registers the following route groups:
  * - `/donors` → handles donor-related endpoints.
  * - `/admins` → handles admin authentication and management endpoints.
+ * - `/histBlood` → handles blood historical endpoints.
  */
 const loadRoutes = (app) => {
   app.use('/donors', donorRoutes);
   app.use('/admins', authRoutes);
+  app.use('/histBlood', histBloodroutes);
 };
 
 module.exports = { loadRoutes };
