@@ -12,5 +12,11 @@ router.get('/:type', histBloodController.readtype)
 // Blood Type Upgrade Route.
 router.put('/update/:blood', histBloodController.update)
 
+// Reverts to the last state.
+router.put('/revert/:last', histBloodController.revertLast)
+
+// Delete changes and return everything to its initial state.
+router.delete('/delete', histBloodController.delete)
+
 // Exporting the router.
 module.exports = router;

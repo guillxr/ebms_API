@@ -62,4 +62,11 @@ export let O_NEGATIVO = {
     'longTime':0
 };
 
-export const listType = [A_POSITIVO, A_NEGATIVO, B_POSITIVO, B_NEGATIVO, AB_POSITIVO, AB_NEGATIVO, O_POSITIVO, O_NEGATIVO];
+export let security = {
+    'type': null,
+    'received': null,
+    'sent': 0,
+    'shortTime': 0,
+    'longTime':0
+};
+

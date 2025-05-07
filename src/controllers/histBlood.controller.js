@@ -16,7 +16,7 @@ const histBloodController = {
         // Parameter search constant.
         const search = req.params.type;
 
-        // Call the desired blood type reading service.
+        // Call the desired blood type reading service and deliver results.
         res.json({ result: HistBloodService.readtype(search)});        
     },
 
@@ -27,9 +27,26 @@ const histBloodController = {
         const search = req.params.blood
         const { sent } = req.body
 
-        // Call the update service.
-        res.json({ update: HistBloodService.update(search, sent)})
+        // Call the update service and show the result.
+        res.json({ update: [`sent alterado: ${sent}`, HistBloodService.update(search, sent)]});
+    },
 
+    // Undo previous update.
+    revertLast: (req, res)=>{
+        // Parameter search constant.
+        const search = req.params.last;
+
+        // Calls the rollback service to the previous state.
+        const show = HistBloodService.revertLast(search);
+
+        // Show the reversal.
+        res.json({ revertLast: show});
+    },
+
+    // Delete all modifications.
+    delete: (req, res)=>{
+        // Calls the delete service and displays the result.
+        res.json({ delete: HistBloodService.delete()});
     }
 }
 
