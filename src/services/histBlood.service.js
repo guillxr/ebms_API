@@ -5,6 +5,8 @@ const prisma = new PrismaClient;
 // Control variable for creating data in the table.
 let already = false;
 
+var objId;
+
 // HistBloodService Services.
 const HistBloodService = {
     // Creates data in the BlType table.
@@ -20,7 +22,8 @@ const HistBloodService = {
                     { type: 'AB+', received: 0, sent: 0, shortTime: 20, longTime: 0 },
                     { type: 'AB-', received: 0, sent: 0, shortTime: 20, longTime: 0 },
                     { type: 'O+', received: 0, sent: 0, shortTime: 20, longTime: 0 },
-                    { type: 'O-', received: 0, sent: 0, shortTime: 20, longTime: 0 }
+                    { type: 'O-', received: 0, sent: 0, shortTime: 20, longTime: 0 },
+                    { type: '', received: 0, sent: 0, shortTime: 20, longTime: 0 }
                 ],
                 skipDuplicates: true // Evita erro se já existir algum registro
             });
@@ -69,7 +72,7 @@ const HistBloodService = {
         },
 
     // Desired blood type update.
-    update : async(search, sent)=>{
+    update: async(search, sent)=>{
         // Call the database update function.
         const update = await updateData(search, sent);
 
@@ -77,8 +80,35 @@ const HistBloodService = {
         return 'Dado atualizado.'
     },
 
+    // Reverts to the previous state of the data.
+    revertLast: async(search)=>{
+        console.log(objId)
+        if (objId == undefined){
+            return `${search} não foi atualizado`
+        }
+
+        // Call the database revert function.
+        const obj = await prisma.blType.findUnique({where: { type: '' }});
+
+        const { received, sent, shortTime, longTime } = obj;
+        
+        const objUp = await prisma.blType.update({
+            where: { type: search.toUpperCase() },
+            // Fields that will be reverted.
+            data: {
+                received: received,  
+                sent: sent,
+                shortTime: shortTime,
+                longTime: longTime
+            } 
+        });
+
+        // Return of service.
+        return 'Alteração revertida.'
+    },
+
     // Erases all changes to the hb by resetting everything.
-    delete: async ()=>{
+    delete: async()=>{
         const delet = await prisma.blType.deleteMany({});
 
         // Return of service.
@@ -104,6 +134,9 @@ async function updateData(blood, days){
 
     //  Destructuring object requested from the database.
     var { received, sent, shortTime, longTime } = obj;
+
+    // Saves the object.
+    saveLast(obj);
  
     // Updates data and calls comparison functions.
     received += 1;
@@ -111,7 +144,7 @@ async function updateData(blood, days){
     shortTime = compareShort(shortTime, days);
     longTime = compareLong(longTime, days);
 
-    const objUp = prisma.blType.update({
+    const objUp = await prisma.blType.update({
         where: { type: blood.toUpperCase() },
         // Fields that will be updated.
         data: {
@@ -123,7 +156,27 @@ async function updateData(blood, days){
     });
 
     // Returns the updated object.
-    return await objUp;
+    return objUp;
+
+};
+
+// Saves the current state before updating.
+async function saveLast(obj){
+    objId = obj.id;
+
+    const objSave = await prisma.blType.update({
+        where: { type: '' },
+        // Fields that will be updated.
+        data: {
+            received: obj.received,  
+            sent: obj.sent,
+            shortTime: obj.shortTime,
+            longTime: obj.longTime
+        } 
+    });
+
+    // Returns the updated object.
+    return objSave;
 };
 
 // Exporting HistBloodService.

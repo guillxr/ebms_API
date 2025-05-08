@@ -44,7 +44,7 @@ model BlType {
   id        Int    @id @default(autoincrement())
   type      String @unique
   received  Int    @default(0)
-  sent      Int    @default(0)
+  sent      Float  @default(0)
   shortTime Int    @default(20)
   longTime  Int    @default(0)
 }

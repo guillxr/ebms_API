@@ -74,9 +74,31 @@ const histBloodController = {
 
             res.status(200).json({ 
                 changed : `sent alterado: ${sent}`,
-                success : 'O dado encontrado foi: ', 
                 confirm : answer 
             });
+        }catch(error){
+            res.status(500).json({
+                error: 'Falha ao atualizar os dados. Tente novamente.',
+                details: error.message
+            });
+        }; 
+    },
+
+    revertLast: async(req, res)=>{
+        // It searches for the requested type in the parameter, checks if it exists in the table and then updates it, using the service.
+        try{
+            const search = req.params.bld;
+            const answer = await HistBloodService.revertLast(search);
+
+            if (!answer) {
+                return res.status(404).json({ error: `Nenhum dado encontrado para o tipo sanguíneo: ${search}` });
+            }
+
+            res.status(200).json({ 
+                success : `Foi encontrado o ${search}`, 
+                confirm : answer 
+            });
+
         }catch(error){
             res.status(500).json({
                 error: 'Falha ao atualizar os dados. Tente novamente.',
