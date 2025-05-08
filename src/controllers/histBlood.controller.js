@@ -41,7 +41,7 @@ const histBloodController = {
         // Parameter search constant.
         try{
             const search = req.params.blood;
-            const { sent } = req.body;
+            const sent = req.body.sent;
             const answer = await HistBloodService.update(search, sent);
             res.status(201).json({ 
                 changed : `sent alterado: ${sent}`,
