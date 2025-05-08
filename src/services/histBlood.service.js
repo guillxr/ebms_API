@@ -1,16 +1,15 @@
-// Importing histBlood.
-// const hb = require('@utils/histBlood');
+// Importing prisma.
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient;
 
+// Control variable for creating data in the table.
 let already = false;
 
 // HistBloodService Services.
 const HistBloodService = {
-
+    // Creates data in the BlType table.
     create : async ()=>{
-        // const alreadyExists = await prisma.blType.count(); // Verifica se já existem registros
-
+        // Checks if data has already been created.
         if (!already) {
             const created = await prisma.blType.createMany({
                 data: [
@@ -42,23 +41,28 @@ const HistBloodService = {
     // Blood type reading requested.
     readtype : async (search)=>{
         // Blood type search requested in route parameter and return when found.
+        async function typ(type){
+            return await prisma.blType.findUnique({where: { type: type }})
+        };
+
+        // Call the function to read the requested blood type. 
         switch (search.toUpperCase()){
             case "A+":
-                return await prisma.blType.findUnique({where: { type: 'A+' }});
+                return typ('A+');
             case "A-":
-                return await prisma.blType.findUnique({where: { type: 'A-' }});
+                return typ('A-');
             case "A+":
-                return await prisma.blType.findUnique({where: { type: 'B+' }});
+                return typ('B+');
             case "A-":
-                return await prisma.blType.findUnique({where: { type: 'B-' }});
+                return typ('B-');
             case "AB+":
-                return await prisma.blType.findUnique({where: { type: 'AB+' }});
+                return typ('AB+');
             case "AB-":
-                return await prisma.blType.findUnique({where: { type: 'AB-' }});
+                return typ('AB-');
             case "O+":
-                return await prisma.blType.findUnique({where: { type: 'O+' }});
+                return typ('O+');
             case "O-":
-                return await prisma.blType.findUnique({where: { type: 'O-' }});
+                return typ('O-');
             default :
                 return 'Informação não encontrada. Tipos sanguíneos para consulta: A+, A-, B+, B-, AB+, AB-, O+ e O-.';
             }            
@@ -66,8 +70,10 @@ const HistBloodService = {
 
     // Desired blood type update.
     update : async(search, sent)=>{
-        // Search for the requested blood type and update the quantity received, average number of days until sending, create a backup of the last change and return of the changed object.
+        // Call the database update function.
         const update = await updateData(search, sent);
+
+        // Return of service.
         return 'Dado atualizado.'
     },
 
@@ -75,64 +81,50 @@ const HistBloodService = {
     delete: async ()=>{
         const delet = await prisma.blType.deleteMany({});
 
+        // Return of service.
         return 'Dados deletados com sucesso'
-
-        // // List of all blood types.
-        // const types = [hb.A_POSITIVO, hb.A_NEGATIVO, hb.B_POSITIVO, hb.B_NEGATIVO, hb.AB_POSITIVO, hb.AB_NEGATIVO, hb.O_POSITIVO, hb.O_NEGATIVO];
-
-        // // Erase all changes to the hb using the deleteALL function. 
-        // for (let i = 0; i < types.length; i++) {
-        //     deleteAll(types[i])
-        // }
-        
-        // // Return of all blood histories.
-        // return [hb.A_POSITIVO, hb.A_NEGATIVO, hb.B_POSITIVO, hb.B_NEGATIVO, hb.AB_POSITIVO, hb.AB_NEGATIVO, hb.O_POSITIVO, hb.O_NEGATIVO];
     }
-}
+};
 
 // Function called during object update, check this function updates the shortTime.
 function compareShort(stime, atual) {
     // Returns the result.
     return atual < stime ? atual : stime;
-}
+};
 
 // Function that checks and updates the longtime, called during object update.
 function compareLong(ltime, atual) {
     // Returns the result.
     return atual > ltime ? atual : ltime;
-}
+};
 
-// Function that updates blood type hb.
+// Function that updates the blood type in the database.
 async function updateData(blood, days){
     const obj = await prisma.blType.findUnique({where: { type: blood.toUpperCase()}});
 
+    //  Destructuring object requested from the database.
     var { received, sent, shortTime, longTime } = obj;
  
+    // Updates data and calls comparison functions.
     received += 1;
     sent = ((days ?? 0) + (sent ?? 0)) / received
     shortTime = compareShort(shortTime, days);
     longTime = compareLong(longTime, days);
 
     const objUp = prisma.blType.update({
-        where: { type: blood.toUpperCase() }, // Deve ser um campo único!
+        where: { type: blood.toUpperCase() },
+        // Fields that will be updated.
         data: {
             received,
             sent,
             shortTime,
             longTime
-        } // Campos que serão atualizados
+        } 
     });
 
+    // Returns the updated object.
     return await objUp;
-}
-
-// Function responsible for deleting all changes to the hb.
-function deleteAll(blood){
-    blood.received = 0;
-    blood.sent = 0;
-    blood.shortTime = 20;
-    blood.longTime = 0;
-}
+};
 
 // Exporting HistBloodService.
 module.exports = HistBloodService;
