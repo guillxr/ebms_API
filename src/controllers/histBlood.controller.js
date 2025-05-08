@@ -51,18 +51,6 @@ const histBloodController = {
         }  
     },
 
-    // Undo previous update.
-    revertLast: (req, res)=>{
-        // Parameter search constant.
-        const search = req.params.last;
-
-        // Calls the rollback service to the previous state.
-        const show = HistBloodService.revertLast(search);
-
-        // Show the reversal.
-        res.json({ revertLast: show});
-    },
-
     // Delete all modifications.
     delete: (req, res)=>{
         // Calls the delete service and displays the result.

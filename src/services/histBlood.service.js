@@ -72,17 +72,21 @@ const HistBloodService = {
     },
 
     // Erases all changes to the hb by resetting everything.
-    delete: ()=>{
-        // List of all blood types.
-        const types = [hb.A_POSITIVO, hb.A_NEGATIVO, hb.B_POSITIVO, hb.B_NEGATIVO, hb.AB_POSITIVO, hb.AB_NEGATIVO, hb.O_POSITIVO, hb.O_NEGATIVO];
+    delete: async ()=>{
+        const delet = await prisma.blType.deleteMany({});
 
-        // Erase all changes to the hb using the deleteALL function. 
-        for (let i = 0; i < types.length; i++) {
-            deleteAll(types[i])
-        }
+        return 'Dados deletados com sucesso'
+
+        // // List of all blood types.
+        // const types = [hb.A_POSITIVO, hb.A_NEGATIVO, hb.B_POSITIVO, hb.B_NEGATIVO, hb.AB_POSITIVO, hb.AB_NEGATIVO, hb.O_POSITIVO, hb.O_NEGATIVO];
+
+        // // Erase all changes to the hb using the deleteALL function. 
+        // for (let i = 0; i < types.length; i++) {
+        //     deleteAll(types[i])
+        // }
         
-        // Return of all blood histories.
-        return [hb.A_POSITIVO, hb.A_NEGATIVO, hb.B_POSITIVO, hb.B_NEGATIVO, hb.AB_POSITIVO, hb.AB_NEGATIVO, hb.O_POSITIVO, hb.O_NEGATIVO];
+        // // Return of all blood histories.
+        // return [hb.A_POSITIVO, hb.A_NEGATIVO, hb.B_POSITIVO, hb.B_NEGATIVO, hb.AB_POSITIVO, hb.AB_NEGATIVO, hb.O_POSITIVO, hb.O_NEGATIVO];
     }
 }
 
