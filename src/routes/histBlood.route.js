@@ -15,7 +15,7 @@ router.get('/:type', histBloodController.readtype);
 // Blood Type Upgrade Route.
 router.put('/update/:blood', histBloodController.update);
 
-// Blood Type Upgrade Route.
+// Blood Type Reversal Route.
 router.put('/revert/:bld', histBloodController.revertLast);
 
 // Delete changes and return everything to its initial state.
