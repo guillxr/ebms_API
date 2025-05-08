@@ -5,30 +5,50 @@ const HistBloodService = require('../services/histBlood.service.js');
 // Blood history controller.
 const histBloodController = {
 
+    create: async (req, res)=>{
+        try{
+            const answer = await HistBloodService.create();
+            res.status(201).json({ success : 'Os dados criados foram: ', data : answer});
+        }catch(error){
+            res.status(500).json({erro: error.message})
+        }
+    },
+
     // Consult all blood histories.
-    read:(req, res)=>{
+    read: async(req, res)=>{
         // Pass on the message with the return of the reading service for all blood types.
-        res.json({ message : ['Aqui estão as médias em dias de tempo de saida da bolsa de sangue em dias, received = recebido, sent = enviado, shortTime = menor tempo e longTime = maior tempo', HistBloodService.read()]});
+        try{
+            const answer = await HistBloodService.read();
+            res.status(201).json({ success : 'Os dados encontrados foram: ', data : answer});
+        }catch(error){
+            res.status(500).json({erro: error.message})
+        }
     },
 
     // Only check the blood type requested in the parameter.
-    readtype:(req, res)=>{
+    readtype: async(req, res)=>{
         // Parameter search constant.
-        const search = req.params.type;
-
-        // Call the desired blood type reading service and deliver results.
-        res.json({ result: HistBloodService.readtype(search)});        
+        try{
+            const answer = await HistBloodService.readtype(req.params.type);
+            res.status(201).json({ success : 'O dado encontrado foi: ', data : answer});
+        }catch(error){
+            res.status(500).json({erro: error.message})
+        }  
     },
 
     // Updates the desired blood type.
-    update:(req, res)=>{
+    update: async(req, res)=>{
         // Parameter search constant.
-        // Days from receipt to shipment of blood.
-        const search = req.params.blood
-        const { sent } = req.body
-
-        // Call the update service and show the result.
-        res.json({ update: [`sent alterado: ${sent}`, HistBloodService.update(search, sent)]});
+        try{
+            const search = req.params.blood;
+            const { sent } = req.body;
+            const answer = await HistBloodService.update(search, sent);
+            res.status(201).json({ 
+                changed : `sent alterado: ${sent}`,
+                success : 'O dado encontrado foi: ', confirm : answer});
+        }catch(error){
+            res.status(500).json({erro: error.message})
+        }  
     },
 
     // Undo previous update.
