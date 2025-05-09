@@ -8,7 +8,7 @@
     "start": "node server",
     "dev": "nodemon server",
     "prepare": "husky install",
-    "ci": "npx eslint . --ext .js",
+    "ci": "./node_modules/.bin/eslint . --ext .js",
     "format": "prettier --write .",
     "posinstall": "npx prisma generate"
   },
