@@ -13,7 +13,7 @@ const HistBloodService = {
     create : async ()=>{
         // Checks if data has already been created.
         if (!already) {
-            const created = await prisma.blType.createMany({
+            await prisma.blType.createMany({
                 data: [
                     { type: 'A+', received: 0, sent: 0, shortTime: 20, longTime: 0 },
                     { type: 'A-', received: 0, sent: 0, shortTime: 20, longTime: 0 },
@@ -54,9 +54,9 @@ const HistBloodService = {
                 return typ('A+');
             case "A-":
                 return typ('A-');
-            case "A+":
+            case "B+":
                 return typ('B+');
-            case "A-":
+            case "B-":
                 return typ('B-');
             case "AB+":
                 return typ('AB+');
@@ -68,13 +68,13 @@ const HistBloodService = {
                 return typ('O-');
             default :
                 return 'Informação não encontrada. Tipos sanguíneos para consulta: A+, A-, B+, B-, AB+, AB-, O+ e O-.';
-            }            
+            };      
         },
 
     // Desired blood type update.
     update: async(search, sent)=>{
         // Call the database update function.
-        const update = await updateData(search, sent);
+        await updateData(search, sent);
 
         // Return of service.
         return 'Dado atualizado.'
@@ -92,7 +92,7 @@ const HistBloodService = {
 
         const { received, sent, shortTime, longTime } = obj;
         
-        const objUp = await prisma.blType.update({
+        await prisma.blType.update({
             where: { type: search.toUpperCase() },
             // Fields that will be reverted.
             data: {
@@ -109,7 +109,7 @@ const HistBloodService = {
 
     // Erases all changes to the hb by resetting everything.
     delete: async()=>{
-        const delet = await prisma.blType.deleteMany({});
+        await prisma.blType.deleteMany({});
 
         // Return of service.
         return 'Dados deletados com sucesso'
