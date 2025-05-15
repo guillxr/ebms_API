@@ -7,6 +7,8 @@ let already = false;
 
 var objId;
 
+var bloqRev;
+
 // HistBloodService Services.
 const HistBloodService = {
     // Creates data in the BlType table.
@@ -76,35 +78,47 @@ const HistBloodService = {
         // Call the database update function.
         await updateData(search, sent);
 
+        // Allows the use of reverLast
+        bloqRev = false;
+
         // Return of service.
         return 'Dado atualizado.'
     },
 
     // Reverts to the previous state of the data.
     revertLast: async(search)=>{
-        console.log(objId)
-        if (objId == undefined){
+
+        if (!bloqRev){
+            if (objId == undefined){
             return `${search} não foi atualizado`
         }
 
-        // Call the database revert function.
-        const obj = await prisma.blType.findUnique({where: { type: '' }});
+            // Call the database revert function.
+            const obj = await prisma.blType.findUnique({where: { type: '' }});
 
-        const { received, sent, shortTime, longTime } = obj;
+            const { received, sent, shortTime, longTime } = obj;
+            
+            await prisma.blType.update({
+                where: { type: search.toUpperCase() },
+                // Fields that will be reverted.
+                data: {
+                    received: received,  
+                    sent: sent,
+                    shortTime: shortTime,
+                    longTime: longTime
+                } 
+            });
+
+            // Blocks the use of reverLast
+            bloqRev = true;
+
+            // Return of service.
+            return 'Alteração revertida.'
+        }else{
+
+            return 'Não há um update recente, primeiro faça um update antes'
+        }
         
-        await prisma.blType.update({
-            where: { type: search.toUpperCase() },
-            // Fields that will be reverted.
-            data: {
-                received: received,  
-                sent: sent,
-                shortTime: shortTime,
-                longTime: longTime
-            } 
-        });
-
-        // Return of service.
-        return 'Alteração revertida.'
     },
 
     // Erases all changes to the hb by resetting everything.

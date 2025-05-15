@@ -33,6 +33,22 @@ const express = require('express');
 const loadMiddlewares = require('@middlewares');
 const { loadRoutes } = require('@routes');
 
+
+const swaggerUi = require("swagger-ui-express");
+const { readFile } = require("fs/promises");
+
+
+async function setupSwagger() {
+    try {
+        const swaggerDocs = JSON.parse(
+            await readFile("./src/swagger.json", "utf-8")
+        );
+        app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+    } catch (error) {
+        console.error("Erro ao carregar Swagger:", error);
+    }
+}
+
 const app = express();
 
 // Load middlewares into the app
@@ -40,5 +56,7 @@ loadMiddlewares(app);
 
 // Load routes into the app
 loadRoutes(app);
+
+setupSwagger();
 
 module.exports = app;

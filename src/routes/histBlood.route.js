@@ -4,7 +4,7 @@ const router = express.Router();
 const histBloodController = require('@controllers/histBlood.controller');
 
 // Creates initial blood type data.
-router.post('/cadastra', histBloodController.create);
+router.post('/create', histBloodController.create);
 
 // Reading route for all blood types.
 router.get('/', histBloodController.read);

@@ -49,7 +49,7 @@ const histBloodController = {
             }
 
             res.status(200).json({ 
-                success : 'O dado encontrado foi: ', 
+                success : 'O resultado da busca foi: ', 
                 data : answer
             });
         }catch(error){
@@ -95,7 +95,7 @@ const histBloodController = {
             }
 
             res.status(200).json({ 
-                success : `Foi encontrado o ${search}`, 
+                success : `Revertendo ${search}`, 
                 confirm : answer 
             });
 
