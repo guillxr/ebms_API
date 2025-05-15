@@ -29,13 +29,13 @@
  * @returns {void}
  * @throws {Error} If any middleware or routes fail to load.
  */
+const { readFile } = require("fs/promises");
+
 const express = require('express');
 const loadMiddlewares = require('@middlewares');
 const { loadRoutes } = require('@routes');
-
-
 const swaggerUi = require("swagger-ui-express");
-const { readFile } = require("fs/promises");
+
 
 
 async function setupSwagger() {
@@ -51,12 +51,12 @@ async function setupSwagger() {
 
 const app = express();
 
+setupSwagger();
+
 // Load middlewares into the app
 loadMiddlewares(app);
 
 // Load routes into the app
 loadRoutes(app);
-
-setupSwagger();
 
 module.exports = app;
