@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,47 +8,56 @@ datasource db {
 }
 
 model Admin {
-  id                  String    @id @default(uuid())
-  username            String    @unique
-  password            String    
-  createAt            DateTime  @default(now())
-  updateAt            DateTime  @updatedAt
+  id       String   @id @default(uuid())
+  username String   @unique
+  password String
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
 }
 
 model Donor {
-  id                  String    @id @default(uuid())
+  id                  String              @id @default(uuid())
   name                String
   birth_date          DateTime
   blood_type          BloodType
   gender              Gender
   phone               String
-  email               String    @unique
-  identity_document   String    @unique
+  email               String              @unique
+  identity_document   String              @unique
   address             String
   latitude            Float?
   longitude           Float?
   last_donation       DateTime?
-  donation_history    DateTime[] @default([])
-  donation_frequency  Int       @default(0)
-  eligibility_status  Boolean   @default(false)
+  donation_history    DateTime[]          @default([])
+  donation_frequency  Int                 @default(0)
+  eligibility_status  Boolean             @default(false)
   contact_preferences ContactPreference[] @default([])
-  registration_date   DateTime  @default(now())
-  update_date         DateTime  @updatedAt
+  registration_date   DateTime            @default(now())
+  update_date         DateTime            @updatedAt
 
   @@index([blood_type])
   @@index([eligibility_status])
   @@index([latitude, longitude])
 }
 
+model BlType {
+  id        Int    @id @default(autoincrement())
+  type      String @unique
+  received  Int    @default(0)
+  sent      Float  @default(0)
+  shortTime Int    @default(20)
+  longTime  Int    @default(0)
+}
+
 enum BloodType {
-  A_POSITIVO   @map("A+")
-  A_NEGATIVO   @map("A-")
-  B_POSITIVO   @map("B+")
-  B_NEGATIVO   @map("B-")
-  AB_POSITIVO  @map("AB+")
-  AB_NEGATIVO  @map("AB-")
-  O_POSITIVO   @map("O+")
-  O_NEGATIVO   @map("O-")
+  A_POSITIVO  @map("A+")
+  A_NEGATIVO  @map("A-")
+  B_POSITIVO  @map("B+")
+  B_NEGATIVO  @map("B-")
+  AB_POSITIVO @map("AB+")
+  AB_NEGATIVO @map("AB-")
+  O_POSITIVO  @map("O+")
+  O_NEGATIVO  @map("O-")
 }
 
 enum Gender {

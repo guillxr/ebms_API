@@ -29,11 +29,29 @@
  * @returns {void}
  * @throws {Error} If any middleware or routes fail to load.
  */
+const { readFile } = require("fs/promises");
+
 const express = require('express');
 const loadMiddlewares = require('@middlewares');
 const { loadRoutes } = require('@routes');
+const swaggerUi = require("swagger-ui-express");
+
+
+
+async function setupSwagger() {
+    try {
+        const swaggerDocs = JSON.parse(
+            await readFile("./src/swagger.json", "utf-8")
+        );
+        app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+    } catch (error) {
+        console.error("Erro ao carregar Swagger:", error);
+    }
+}
 
 const app = express();
+
+setupSwagger();
 
 // Load middlewares into the app
 loadMiddlewares(app);
