@@ -1,0 +1,388 @@
+{
+    "openapi":"3.1.1",
+    "info": {
+        "title": "API  MEIO AMBIENTE",
+        "description": "Essa api tem como objetivo ver cidades e paises agindo a favor do meio-ambiente",
+        "termsOfService": "http://localhost:3000/terms",
+        "contact": {
+            "email": "llielzinh@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "paths": {
+    "/histBlood/create": {
+      "post":{
+        "summary": "Efetua o cadastro dos tipos sanguíneos.",
+        "description": "Cria e insere os dados no database e ápos a criação retorna o resultado.",
+        "operationId": "create" ,
+        "tags": ["Histórico de Sangue"],
+        "responses": {
+          "201": {
+            "description": "Cria as tabelas dos tipos sanguíneos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "blood": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "blood": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }  
+        }
+      }
+    },
+    "/histBlood/": {
+      "get":{
+        "summary": "Apresenta as médias de cada tipo sanguíneo.",
+        "description": "Apresenta quantas bolsas de sangue, menor e maior tempo e o tempo médio em dias que cada tipo sanguíneo fica guardado até ser usado.",
+        "operationId": "pegaInfo",
+        "tags": ["Histórico de Sangue"],
+        "responses": {
+          "200": {
+            "description": "Retorna os dados sobre o histórico.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "blood": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/histGet"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "blood": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/histGet"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }  
+        }
+      }
+    },
+    "/histBlood/{type}":{
+      "get":{
+        "summary": "Pegar tipo de sangue especifico.",
+        "description": "Retorna dados do tipo de sangue desejado.",
+        "operationId": "consultaCountry",
+        "tags": ["Histórico de Sangue"],
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "description": "Tipo de sangue para busca.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tipo sanguíneo encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bloodInfo": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tipo sanguíneo não encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "blood": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/histGet"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "blood": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/histGet"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          } 
+        }
+      }
+    },
+    "/histBlood/update/{blood}": {
+      "put":{
+        "summary": "Atualiza as médias de um tipo sanguíneo.",
+        "description": "Atualiza as médias do tipo sanguíneo escolhido usando 'sent' para calculo dos demais campos do object do io sanguíneo que se deseja atualizar, sent são os dias que o sangue que acabo de ser utilizado ficou em espera para uso.",
+        "operationId": "update",
+        "tags": ["Histórico de Sangue"],
+        "parameters": [
+          {
+            "name": "blood",
+            "in": "path",
+            "required": true,
+            "description": "Tipo de sangue para busca.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sent": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Atualiza o histórico do tipo de sangue desejado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "blood": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/histGet"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "blood": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/histGet"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }  
+        }
+      }
+    },
+    "/histBlood/revert/{bld}": {
+      "put":{
+        "summary": "Desfaz a última alteração de um tipo sanguíneo.",
+        "description": "Desfaz a ultima alteração feita, caso o update for feito errado pode ser usado para reverter a última alteração.",
+        "operationId": "revertLast",
+        "tags": ["Histórico de Sangue"],
+        "parameters": [
+          {
+            "name": "bld",
+            "in": "path",
+            "required": true,
+            "description": "Tipo de sangue para reverter alteração.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Desfaz a última atualização no histórico do tipo de sangue desejado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "blood": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/histGet"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tipo sanguíneo não encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "blood": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/histGet"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "blood": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/histGet"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }  
+        }
+      }
+    },
+    "/histBlood/delete": {
+      "delete": {
+        "summary": "Deleta as tabelas dos tipos sanguíneos.",
+        "description": "Deleta as tabelas dos tipos sanguíneos do banco de dados.",
+        "operationId": "delete",
+        "tags": ["Histórico de Sangue"],
+        "responses": {
+          "200": {
+            "description": "Deleta as tabelas dos tipos sanguíneos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "blood": {
+                      "type": "object",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "blood": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/histGet"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "histGet": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array"
+          }
+        }
+      }
+    }
+  }
+}
