@@ -7,6 +7,7 @@ const donorRoutes = require('./donor.routes');
 const authRoutes = require('./auth.route');
 const histBloodroutes = require('./histBlood.route');
 const estBlood = require("./estBlood.route");
+const localityRoute = require("./locality.route");
 
 
 /**
@@ -29,7 +30,7 @@ const loadRoutes = (app) => {
   app.use('/admins', authRoutes);
   app.use('/histBlood', histBloodroutes);
   app.use('/estBlood', estBlood);
-
+  app.use('/locality', localityRoute);
 };
 
 module.exports = { loadRoutes };

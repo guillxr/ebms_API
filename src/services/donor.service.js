@@ -23,7 +23,7 @@
  * 
  * @namespace DonorService
  */
-const donorModel = require('@models/donor.model');
+const donorModel =  ('@models/donor.model');
 const log = require('@utils/logger');
 
 const DonorService = {
