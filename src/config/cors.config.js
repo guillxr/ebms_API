@@ -1,22 +1,22 @@
 /**
  * CORS Configuration.
- * 
- * This module exports an object containing the configuration for Cross-Origin Resource 
- * Sharing (CORS). 
- * CORS allows web servers to specify which origins are permitted to 
+ *
+ * This module exports an object containing the configuration for Cross-Origin Resource
+ * Sharing (CORS).
+ * CORS allows web servers to specify which origins are permitted to
  * access resources, and it defines the methods and headers allowed in the requests.
  *
- * The configuration ensures that CORS is set up properly for handling requests 
+ * The configuration ensures that CORS is set up properly for handling requests
  * between different origins while supporting the necessary HTTP methods and headers f
  * or the application.
- * 
+ *
  * @module cors.config
  * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
  *
  * @example
  * const corsOptions = require('@config/cors.config');
  * app.use(cors(corsOptions));
- * 
+ *
  * @returns {Object} The CORS configuration object.
  * @property {string} origin - The allowed origin for CORS requests. Defaults to '*' (any origin).
  * @property {string[]} methods - The HTTP methods allowed for cross-origin requests.

@@ -22,4 +22,3 @@ jobs:
 
       - name: Run CI script
         run: npm run ci
-        

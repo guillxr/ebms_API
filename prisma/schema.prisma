@@ -72,3 +72,12 @@ enum ContactPreference {
   whatsapp
   call
 }
+
+model Locality {
+  id           Int    @id @default(autoincrement())
+  street       String
+  neighborhood String
+  zip          String
+  city         String
+  state        String
+}
