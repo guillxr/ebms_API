@@ -1,4 +1,5 @@
 const express = require('express');
+
 const estoqueController = require('../controllers/estBlood.controller.js');
 
 const router = express.Router();

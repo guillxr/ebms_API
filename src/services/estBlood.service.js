@@ -2,7 +2,7 @@ const Stock = require('../models/estBlood.model.js');
 
 class EstoqueService {
   async adicionarLote(loteData) {
-    const lote = new Estoque(loteData);
+    const lote = new Stock(loteData);
     return await lote.save();
   }
 
