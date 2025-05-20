@@ -2,7 +2,7 @@
  * @module DonorController
  *
  * This module defines controller functions for handling HTTP requests related to donors.
- * It uses DonorService to perform business logic and Logger utility to log operations 
+ * It uses DonorService to perform business logic and Logger utility to log operations
  * and errors.
  *
  * @requires module:@services/donor.service - Service for donor data operations.
@@ -20,7 +20,7 @@ const donorController = {
   /**
    * Handles donor creation requests.
    *
-   * Logs the creation process, invokes the service to create a donor, and responds 
+   * Logs the creation process, invokes the service to create a donor, and responds
    * with the result. On error, logs the error and responds with status 400.
    *
    * @method
@@ -90,7 +90,10 @@ const donorController = {
       res.status(200).json(donor);
       log(`Donor fetched successfully: ${donor.id}`, 'info');
     } catch (err) {
-      log(`Error fetching donor by ID ${req.params.id}: ${err.message}`, 'error');
+      log(
+        `Error fetching donor by ID ${req.params.id}: ${err.message}`,
+        'error'
+      );
       res.status(404).json({
         error: 'Donor not found',
         details: err.message,
@@ -113,9 +116,15 @@ const donorController = {
       log(`Fetching donors by blood type: ${req.params.bloodType}...`, 'info');
       const donors = await donorService.getByBloodType(req.params.bloodType);
       res.status(200).json(donors);
-      log(`Fetched ${donors.length} donors with blood type ${req.params.bloodType}`, 'info');
+      log(
+        `Fetched ${donors.length} donors with blood type ${req.params.bloodType}`,
+        'info'
+      );
     } catch (err) {
-      log(`Error fetching donors by blood type ${req.params.bloodType}: ${err.message}`, 'error');
+      log(
+        `Error fetching donors by blood type ${req.params.bloodType}: ${err.message}`,
+        'error'
+      );
       res.status(400).json({
         error: 'Error fetching donors by blood type',
         details: err.message,
@@ -143,7 +152,10 @@ const donorController = {
       });
       log(`Donor updated successfully: ${donor.id}`, 'info');
     } catch (err) {
-      log(`Error updating donor with ID ${req.params.id}: ${err.message}`, 'error');
+      log(
+        `Error updating donor with ID ${req.params.id}: ${err.message}`,
+        'error'
+      );
       res.status(400).json({
         error: 'Error updating donor',
         details: err.message,

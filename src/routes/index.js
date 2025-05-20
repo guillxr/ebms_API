@@ -6,9 +6,8 @@
 const donorRoutes = require('./donor.routes');
 const authRoutes = require('./auth.route');
 const histBloodroutes = require('./histBlood.route');
-const estBlood = require("./estBlood.route");
-const localityRoute = require("./locality.route");
-
+const estBlood = require('./estBlood.route');
+const localityRoute = require('./locality.route');
 
 /**
  * Loads all route groups into the given Express app instance.

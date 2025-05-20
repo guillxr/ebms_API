@@ -1,4 +1,4 @@
-const estoqueService = require("../services/estBlood.service.js");
+const estoqueService = require('../services/estBlood.service.js');
 
 class EstoqueController {
   async adicionarLote(req, res) {
@@ -23,9 +23,12 @@ class EstoqueController {
     try {
       const { id } = req.params;
       const { quantidade } = req.body;
-      const loteAtualizado = await estoqueService.atualizarQuantidade(id, quantidade);
+      const loteAtualizado = await estoqueService.atualizarQuantidade(
+        id,
+        quantidade
+      );
       if (!loteAtualizado) {
-        return res.status(404).json({ message: "Lote não encontrado" });
+        return res.status(404).json({ message: 'Lote não encontrado' });
       }
       res.status(200).json(loteAtualizado);
     } catch (error) {
@@ -38,7 +41,7 @@ class EstoqueController {
       const { id } = req.params;
       const loteRemovido = await estoqueService.removerLote(id);
       if (!loteRemovido) {
-        return res.status(404).json({ message: "Lote não encontrado" });
+        return res.status(404).json({ message: 'Lote não encontrado' });
       }
       res.status(204).send();
     } catch (error) {

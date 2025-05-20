@@ -1,13 +1,13 @@
 /**
  * @module DonorService
- * 
+ *
  * This module provides services for managing donor records, including creating, retrieving,
  * updating, and deleting donors. It interacts with the donor model and logs important information
  * about each operation.
- * 
+ *
  * @requires module:@models/donor.model - The model for donor data management.
  * @requires module:@utils/logger - The logger utility to log messages at various levels.
- * 
+ *
  * @example
  * // To create a new donor, use:
  * const donorData = {
@@ -20,19 +20,19 @@
 
 /**
  * Service to manage donor data, including operations to create, retrieve, update, and delete donors.
- * 
+ *
  * @namespace DonorService
  */
-const donorModel =  ('@models/donor.model');
+const donorModel = '@models/donor.model';
 const log = require('@utils/logger');
 
 const DonorService = {
   /**
    * Creates a new donor by validating and filtering the provided data.
-   * 
+   *
    * This function ensures that required fields (name and blood type) are present.
    * It filters the data to include only allowed fields and formats dates as needed.
-   * 
+   *
    * @function
    * @name createDonor
    * @memberof DonorService
@@ -87,14 +87,14 @@ const DonorService = {
     if (filteredData.last_donation) {
       filteredData.last_donation = new Date(filteredData.last_donation);
     }
-    
+
     log('Creating new donor...', 'info');
     return await donorModel.create(filteredData);
   },
 
   /**
    * Retrieves all donors from the database.
-   * 
+   *
    * @function
    * @name getAllDonors
    * @memberof DonorService
@@ -106,7 +106,7 @@ const DonorService = {
 
   /**
    * Retrieves a donor by their ID.
-   * 
+   *
    * @function
    * @name getDonorById
    * @memberof DonorService
@@ -125,7 +125,7 @@ const DonorService = {
 
   /**
    * Retrieves donors by their blood type.
-   * 
+   *
    * @function
    * @name getByBloodType
    * @memberof DonorService
@@ -143,7 +143,7 @@ const DonorService = {
 
   /**
    * Updates a donor's information.
-   * 
+   *
    * @function
    * @name updateDonor
    * @memberof DonorService
@@ -155,18 +155,18 @@ const DonorService = {
   updateDonor: async (id, data) => {
     if (!id) {
       log('ID is required to update a donor.', 'error');
-      throw new Error('ID is required')
-    };
+      throw new Error('ID is required');
+    }
     if (!data) {
       log('Update data is required to update a donor.', 'error');
       throw new Error('Update data is required');
-    };
+    }
     return await donorModel.update(id, data);
   },
 
   /**
    * Deletes a donor by their ID.
-   * 
+   *
    * @function
    * @name deleteDonor
    * @memberof DonorService
@@ -178,8 +178,8 @@ const DonorService = {
     if (!id) {
       log('ID is required to delete a donor.', 'error');
       throw new Error('ID is required');
-    };
-    
+    }
+
     return await donorModel.delete(id);
   },
 };

@@ -1,4 +1,4 @@
-const Stock = require("../models/estBlood.model.js");
+const Stock = require('../models/estBlood.model.js');
 
 class EstoqueService {
   async adicionarLote(loteData) {
