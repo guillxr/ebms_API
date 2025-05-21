@@ -8,6 +8,7 @@ const authRoutes = require('./auth.route');
 const histBloodroutes = require('./histBlood.route');
 const estBlood = require('./estBlood.route');
 const localityRoute = require('./locality.route');
+const stockValidityRoutes = require('./validity.route');
 
 /**
  * Loads all route groups into the given Express app instance.
@@ -30,6 +31,7 @@ const loadRoutes = (app) => {
   app.use('/histBlood', histBloodroutes);
   app.use('/estBlood', estBlood);
   app.use('/locality', localityRoute);
+  app.use('/validity', stockValidityRoutes);
 };
 
 module.exports = { loadRoutes };
