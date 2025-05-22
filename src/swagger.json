@@ -3,7 +3,6 @@
   "info": {
     "title": "API  MEIO AMBIENTE",
     "description": "Essa api tem como objetivo ver cidades e paises agindo a favor do meio-ambiente",
-    "termsOfService": "http://localhost:3000/terms",
     "contact": {
       "email": "saveambiente@gmail.com"
     },
@@ -11,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3000"
+      "url": "https://ebms-api.onrender.com/api-docs/"
     }
   ],
   "paths": {
