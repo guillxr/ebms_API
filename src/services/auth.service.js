@@ -1,8 +1,8 @@
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import log from '@utils/logger.js';
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
-import { prisma } from '../prisma/client.js';
+const log = require('../utils/logger');
+const { prisma } = require('../../prisma/client');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecret';
 
@@ -84,4 +84,4 @@ const authService = {
   },
 };
 
-export default authService;
+module.exports = authService;
