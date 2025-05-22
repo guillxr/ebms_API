@@ -1155,8 +1155,8 @@
         }
       },
       "put": {
-        "summary": "Consulta doador pelo id.",
-        "description": "Consulta o doador pedido no id.",
+        "summary": "Atualiza doador pelo id.",
+        "description": "Atualiza o doador pedido no id.",
         "operationId": "update",
         "tags": ["Doador"],
         "parameters": [
@@ -1170,9 +1170,19 @@
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Donor"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "Consulta com sucesso.",
+            "description": "Atualizado com sucesso.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1210,8 +1220,8 @@
         }
       },
       "delete": {
-        "summary": "Consulta doador pelo id.",
-        "description": "Consulta o doador pedido no id.",
+        "summary": "Deleta doador pelo id.",
+        "description": "Deleta o doador pedido no id.",
         "operationId": "delete",
         "tags": ["Doador"],
         "parameters": [
@@ -1227,7 +1237,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Consulta com sucesso.",
+            "description": "Deletado com sucesso.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1303,6 +1313,446 @@
           },
           "400": {
             "description": "Cheque as informações.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/validity/": {
+      "post": {
+        "summary": "Cadastra validade.",
+        "operationId": "createStockValidity",
+        "tags": ["Validade"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/validade"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Cadastado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Cheque as informações.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Consulta validade.",
+        "description": "Consulta todas as validades.",
+        "operationId": "getStockValidity",
+        "tags": ["Validade"],
+        "responses": {
+          "200": {
+            "description": "Consulta com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/validity/:id": {
+      "put": {
+        "summary": "Atualiza dados da validade do lote buscado pelo id.",
+        "operationId": "updateStockValidity",
+        "tags": ["Validade"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Id para busca.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/validade"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Atualizado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deleta validade.",
+        "description": "Deleta validade usando ID.",
+        "operationId": "deleteStockValidity",
+        "tags": ["Validade"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Id para busca.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deletado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/agendamentos/": {
+      "post": {
+        "summary": "Cadastra agendamento.",
+        "operationId": "criarAgendamento",
+        "tags": ["Agendamento"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/agendamento"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Cadastado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Cheque as informações.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Consulta agendamento.",
+        "description": "Consulta todos os agendamentos.",
+        "operationId": "listarAgendamentos",
+        "tags": ["Agendamento"],
+        "responses": {
+          "200": {
+            "description": "Consulta com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/agendamentos/:id": {
+      "put": {
+        "summary": "Atualiza dados do agendamento buscado pelo id.",
+        "operationId": "atualizarAgendamento",
+        "tags": ["Agendamento"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Id para busca.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/agendamentoUp"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Atualizado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Cheque o id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deleta validade.",
+        "description": "Deleta validade usando ID.",
+        "operationId": "deletarAgendamento",
+        "tags": ["Agendamento"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Id para busca.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deletado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1416,6 +1866,65 @@
             },
             "description": "Preferências de contato do doador"
           } 
+        }
+      },
+      "validade":{
+        "type": "object",
+        "properties": {
+          "batch": {
+            "type": "string",
+            "description": "Lote do sangue"
+          }, 
+          "quantity":{
+            "type": "string",
+            "description": "Quantidade de sangue"
+          }, 
+          "expirationDate": {
+            "type": "string",
+            "description": "Data de expiração"
+          }, 
+          "status": {
+            "type": "string",
+            "description": "Estado do sangue"
+          }
+        }
+      },
+      "agendamento":{
+        "type": "object",
+        "properties": {
+          "usuario_id": {
+            "type": "string",
+            "description": "Userid"
+          }, 
+          "data_agendamento":{
+            "type": "string",
+            "description": "Data de doação"
+          }, 
+          "local": {
+            "type": "string",
+            "description": "local da doação"
+          }, 
+          "status": {
+            "type": "string",
+            "description": "Estado do agendamento"
+          }
+        }
+      },
+      "agendamentoUp":{
+        "type": "object",
+        "properties": {
+          "data_agendamento":{
+            "type": "string",
+            "description": "Data de doação"
+          }, 
+          "local": {
+            "type": "string",
+            "description": "local da doação"
+          }, 
+          "status": {
+            "type": "string",
+            "description": "Estado do agendamento"
+          }
         }
       }
     }
