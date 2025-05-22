@@ -3,13 +3,11 @@
  * @module routes
  */
 
-const donorRoutes = require('./donor.routes');
+const donorRoutes = require('./donor.route');
 const authRoutes = require('./auth.route');
 const histBloodroutes = require('./histBlood.route');
 const estBlood = require("./estBlood.route");
-const scheduroutes = require("./scheduling.route");
 const schedulingRoutes = require('./scheduling.route');
-const estBlood = require('./estBlood.route');
 const localityRoute = require('./locality.route');
 const stockValidityRoutes = require('./validity.route');
 
@@ -29,9 +27,9 @@ const stockValidityRoutes = require('./validity.route');
  * - `/scheduling` → handles scheduling endpoints.
 
  */
-export function loadRoutes(app) {
+function loadRoutes(app) {
   app.use('/donors', donorRoutes);
-  app.use('/admins', authRoutes);
+  app.use('/auth', authRoutes);
   app.use('/histBlood', histBloodroutes);
   app.use('/estBlood', estBlood);
   app.use('/agendamentos', schedulingRoutes);

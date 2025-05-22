@@ -1,5 +1,5 @@
-import authService from '@services/auth.service';
-import log from '@utils/logger';
+const authService = require('../services/auth.service');
+const log = require('../utils/logger');
 
 /**
  * Controller responsible for handling HTTP requests related to admin authentication.

@@ -1,4 +1,4 @@
-import { body, param } from 'express-validator';
+const { body, param } = require('express-validator');
 
 const validGenders = ['Masculino', 'Feminino', 'Outro'];
 const validContactPreferences = ['email', 'sms', 'whatsapp', 'call'];

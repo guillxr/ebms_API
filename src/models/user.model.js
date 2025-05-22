@@ -1,6 +1,5 @@
-import log from '@utils/logger.js';
-
-import { prisma } from '../prisma/client.js';
+const log = require('../utils/logger');
+const { prisma } = require('../../prisma/client');
 
 /**
  * @module UserModel
@@ -84,4 +83,4 @@ const UserModel = {
   },
 };
 
-export default UserModel;
+module.exports = UserModel;

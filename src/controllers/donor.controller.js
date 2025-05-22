@@ -8,8 +8,8 @@
  * @requires module:@services/donor.service - Service for donor data operations.
  * @requires module:@utils/logger - Logger utility for logging messages.
  */
-import donorService from '@services/donor.service';
-import log from '@utils/logger';
+const donorService = require('../services/donor.service');
+const log = require('../utils/logger');
 
 /**
  * Controller for donor-related HTTP endpoints.

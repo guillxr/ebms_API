@@ -13,7 +13,7 @@ module.exports = [
     files: ['**/*.js'],
     languageOptions: {
       ecmaVersion: 2021,
-      sourceType: 'module',
+      sourceType: 'commonjs',
       globals: {
         console: true,
         process: true,
