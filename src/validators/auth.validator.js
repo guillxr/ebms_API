@@ -1,4 +1,5 @@
-import { body } from 'express-validator';
+const { body } = require('express-validator');
+
 
 const loginValidation = [
   body('email')
