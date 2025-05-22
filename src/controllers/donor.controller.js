@@ -8,8 +8,8 @@
  * @requires module:@services/donor.service - Service for donor data operations.
  * @requires module:@utils/logger - Logger utility for logging messages.
  */
-const donorService = require('@services/donor.service');
-const log = require('@utils/logger');
+import donorService from '@services/donor.service';
+import log from '@utils/logger';
 
 /**
  * Controller for donor-related HTTP endpoints.
@@ -33,7 +33,7 @@ const donorController = {
   create: async (req, res) => {
     try {
       log('Creating donor...', 'info');
-      const donor = await donorService.createDonor(req.body);
+      const donor = await donorService.create(req.body);
       res.status(201).json({
         message: 'Donor created successfully!',
         data: donor,

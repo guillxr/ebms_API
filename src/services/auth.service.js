@@ -1,74 +1,87 @@
-const authModel = require('@models/auth.model');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const log = require('@utils/logger');
-const config = require('@config');
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import log from '@utils/logger.js';
 
-/**
- * Service module responsible for admin authentication and registration.
- */
+import { prisma } from '../prisma/client.js';
+
+const JWT_SECRET = process.env.JWT_SECRET || 'supersecret';
+
 const authService = {
   /**
-   * Authenticates an admin user by verifying their credentials and issuing a JWT.
+   * Authenticates a user by email and password.
    *
    * @async
-   * @function findAdmin
-   * @param {string} username - The username of the admin attempting to log in.
-   * @param {string} password - The plain-text password provided by the admin.
-   * @returns {Promise<{token: string, user: {id: number, username: string}}>}
-   * An object containing the JWT token and basic user info if authentication is successful.
-   * @throws {Error} Throws an error if the admin is not found or if the password is incorrect.
+   * @function findUser
+   * @param {string} email
+   * @param {string} password
+   * @returns {Promise<{token: string, user: object}>}
    */
-  findAdmin: async (username, password) => {
-    log(`Authenticating admin: ${username}`, 'info');
-    try {
-      const admin = await authModel.findAdmin(username);
+  findUser: async (email, password) => {
+    const user = await prisma.user.findUnique({
+      where: { email },
+      include: {
+        donor: true,
+        admin: true,
+      },
+    });
 
-      if (!admin) {
-        log(`Admin not found during login: ${username}`, 'warn');
-        throw new Error('Username or password invalid!');
-      }
-
-      const isPasswordValid = await bcrypt.compare(password, admin.password);
-
-      if (!isPasswordValid) {
-        log(`Invalid password attempt for user: ${username}`, 'warn');
-        throw new Error('Password invalid!');
-      }
-
-      const payload = { id: admin.id, username: admin.username };
-      const token = jwt.sign(payload, config.jwtSecret, { expiresIn: '1h' });
-
-      log(`Authentication successful for admin: ${username}`, 'info');
-      return { token, user: payload };
-    } catch (err) {
-      log(`Error during admin authentication: ${err.message}`, 'error');
-      throw err;
+    if (!user) {
+      log(`Login failed: user not found for ${email}`, 'warn');
+      throw new Error('User not found');
     }
+
+    const valid = await bcrypt.compare(password, user.password);
+    if (!valid) {
+      log(`Login failed: invalid password for ${email}`, 'warn');
+      throw new Error('Invalid password');
+    }
+
+    const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '1d' });
+
+    return {
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        donor: user.donor,
+        admin: user.admin,
+      },
+    };
   },
 
   /**
-   * Creates a new admin user with a hashed password.
+   * Creates a new user and associated role (donor or admin).
    *
    * @async
-   * @function createAdmin
-   * @param {string} username - The username for the new admin.
-   * @param {string} password - The plain-text password for the new admin.
-   * @returns {Promise<Object>} The created admin object.
-   * @throws {Error} Throws an error if creation fails.
+   * @function createUser
+   * @param {string} email
+   * @param {string} password
+   * @param {string} role
+   * @param {object} donorData
+   * @param {object} adminData
+   * @returns {Promise<object>}
    */
-  createAdmin: async (username, password) => {
-    log(`Registering new admin: ${username}`, 'info');
-    try {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const admin = await authModel.create(username, hashedPassword);
-      log(`Admin registered successfully: ${username}`, 'info');
-      return admin;
-    } catch (err) {
-      log(`Error during admin registration: ${err.message}`, 'error');
-      throw err;
-    }
+  createUser: async (email, password, role, donorData = null, adminData = null) => {
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = await prisma.user.create({
+      data: {
+        email,
+        password: hashedPassword,
+        role,
+        donor: role === 'DONOR' && donorData ? { create: donorData } : undefined,
+        admin: role === 'ADMIN' && adminData ? { create: adminData } : undefined,
+      },
+      include: {
+        donor: true,
+        admin: true,
+      },
+    });
+
+    log(`User created: ${email} (${role})`, 'info');
+    return user;
   },
 };
 
-module.exports = authService;
+export default authService;

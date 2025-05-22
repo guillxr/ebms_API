@@ -1,5 +1,5 @@
-const authService = require('@services/auth.service');
-const log = require('@utils/logger');
+import authService from '@services/auth.service';
+import log from '@utils/logger';
 
 /**
  * Controller responsible for handling HTTP requests related to admin authentication.
@@ -18,13 +18,13 @@ const authController = {
    * or a 401 response if authentication fails.
    */
   login: async (req, res) => {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
     try {
-      const credentials = await authService.findAdmin(username, password);
+      const credentials = await authService.findUser(email, password);
       res.status(200).json(credentials);
     } catch (err) {
       log(`Login failed: ${err.message}`, 'warn');
-      res.status(401).json({ error: 'Username or password invalid' });
+      res.status(401).json({ error: 'Email or password invalid' });
     }
   },
 
@@ -40,19 +40,14 @@ const authController = {
    * Sends a 201 response with the new admin data if successful,
    * or a 400 response if creation fails.
    */
-  createAdmin: async (req, res) => {
-    const { username, password } = req.body;
+  createUser: async (req, res) => {
+    const { email, password, role, donorData, adminData } = req.body;
     try {
-      const admin = await authService.createAdmin(username, password);
-      res.status(201).json({
-        id: admin.id,
-        username: admin.username,
-        createdAt: admin.createdAt,
-        updatedAt: admin.updatedAt,
-      });
+      const user = await authService.createUser(email, password, role, donorData, adminData);
+      res.status(201).json(user);
     } catch (err) {
-      log(`Error creating admin: ${err.message}`, 'error');
-      res.status(400).json({ error: `Error creating admin: ${err}` });
+      log(`Error creating user: ${err.message}`, 'error');
+      res.status(400).json({ error: `Error creating user: ${err.message}` });
     }
   },
 };

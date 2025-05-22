@@ -22,50 +22,11 @@
  *
  * @namespace Donor
  */
-const prisma = require('@config').prisma;
-const log = require('@utils/logger');
+import log from '@utils/logger';
+
+import { prisma } from '../prisma/client.js';
 
 const Donor = {
-  /**
-   * Creates a new donor in the database.
-   *
-   * This function creates a new donor record with the provided data and handles
-   * the possibility of a unique constraint violation for the email field.
-   *
-   * @function
-   * @name create
-   * @memberof Donor
-   * @param {Object} data - The donor data to be added.
-   * @param {string} data.name - The full name of the donor.
-   * @param {string} data.birth_date - The birth date of the donor (ISO format).
-   * @param {string} data.blood_type - The blood type of the donor.
-   * @param {string} data.gender - The gender of the donor.
-   * @param {string} data.phone - The phone number of the donor.
-   * @param {string} data.email - The email address of the donor.
-   * @param {string} data.identity_document - The ID document of the donor.
-   * @param {string} data.address - The address of the donor.
-   * @param {number} [data.latitude] - The latitude of the donor's location.
-   * @param {number} [data.longitude] - The longitude of the donor's location.
-   * @param {string} [data.last_donation] - The last donation date (ISO format).
-   * @param {number} [data.donation_frequency] - The donation frequency preference of the donor.
-   * @param {boolean} [data.eligibility_status] - The eligibility status of the donor.
-   * @param {Array} [data.contact_preferences] - The contact preferences of the donor (e.g., 'email', 'sms').
-   * @throws {Error} If there is an error during donor creation, such as a duplicate email.
-   * @returns {Promise<Object>} The created donor object.
-   */
-  create: async (data) => {
-    try {
-      log('Creating donor...', 'info');
-      return await prisma.donor.create({ data });
-    } catch (error) {
-      log(`Prisma error on create: ${error}`, 'error');
-      if (error.code === 'P2002' && error.meta?.target?.includes('email')) {
-        throw new Error('Email already exists');
-      }
-      throw error;
-    }
-  },
-
   /**
    * Retrieves all donors from the database.
    *

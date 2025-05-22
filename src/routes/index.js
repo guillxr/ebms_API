@@ -29,7 +29,7 @@ const stockValidityRoutes = require('./validity.route');
  * - `/scheduling` → handles scheduling endpoints.
 
  */
-const loadRoutes = (app) => {
+export function loadRoutes(app) {
   app.use('/donors', donorRoutes);
   app.use('/admins', authRoutes);
   app.use('/histBlood', histBloodroutes);
@@ -37,7 +37,6 @@ const loadRoutes = (app) => {
   app.use('/agendamentos', schedulingRoutes);
   app.use('/locality', localityRoute);
   app.use('/validity', stockValidityRoutes);
-
 };
 
 module.exports = { loadRoutes };

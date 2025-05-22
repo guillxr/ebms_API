@@ -7,22 +7,33 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Admin {
+model User {
   id       String   @id @default(uuid())
-  username String   @unique
+  email    String   @unique
   password String
+  role     Role
   createAt DateTime @default(now())
   updateAt DateTime @updatedAt
+
+  admin Admin? @relation("AdminUser")
+  donor Donor? @relation("DonorUser")
+}
+
+model Admin {
+  id     String @id @default(uuid())
+  userId String @unique
+  user   User   @relation("AdminUser", fields: [userId], references: [id])
 }
 
 model Donor {
   id                  String              @id @default(uuid())
+  userId              String              @unique
+  user                User                @relation("DonorUser", fields: [userId], references: [id])
   name                String
   birth_date          DateTime
   blood_type          BloodType
   gender              Gender
   phone               String
-  email               String              @unique
   identity_document   String              @unique
   address             String
   latitude            Float?
@@ -47,6 +58,11 @@ model BlType {
   sent      Float  @default(0)
   shortTime Int    @default(20)
   longTime  Int    @default(0)
+}
+
+enum Role {
+  ADMIN
+  DONOR
 }
 
 enum BloodType {
