@@ -6,6 +6,9 @@
 const donorRoutes = require('./donor.routes');
 const authRoutes = require('./auth.route');
 const histBloodroutes = require('./histBlood.route');
+const estBlood = require("./estBlood.route");
+const scheduroutes = require("./scheduling.route");
+const schedulingRoutes = require('./scheduling.route');
 const estBlood = require('./estBlood.route');
 const localityRoute = require('./locality.route');
 const stockValidityRoutes = require('./validity.route');
@@ -23,6 +26,7 @@ const stockValidityRoutes = require('./validity.route');
  * - `/admins` → handles admin authentication and management endpoints.
  * - `/histBlood` → handles blood historical endpoints.
  * - `/estBlood` → handles blood stock endpoits.
+ * - `/scheduling` → handles scheduling endpoints.
 
  */
 const loadRoutes = (app) => {
@@ -30,8 +34,10 @@ const loadRoutes = (app) => {
   app.use('/admins', authRoutes);
   app.use('/histBlood', histBloodroutes);
   app.use('/estBlood', estBlood);
+  app.use('/agendamentos', schedulingRoutes);
   app.use('/locality', localityRoute);
   app.use('/validity', stockValidityRoutes);
+
 };
 
 module.exports = { loadRoutes };
