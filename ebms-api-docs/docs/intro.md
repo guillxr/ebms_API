@@ -14,7 +14,7 @@ Bem-vindo à **EBMS - Economia de Sangue e Monitoramento de Estoque**, uma API R
 
 **Gestão de distribuição:** facilita o planejamento logístico para transferências de bolsas entre locais com excesso ou escassez.
 
-## 🛠️ Como rodar
+## Como rodar
 
 Para configurar e inicializar a API, siga os seguintes passos:
 
@@ -23,6 +23,16 @@ git clone https://github.com/seu-usuario/ebms_API.git
 npm install
 npm run dev
 ```
+
+## Tecnologias utilizadas:
+<ul>
+    <li>JavaScript</li>
+    <li>Node.js</li>
+    <li>Express</li>
+    <li>Prisma</li>
+    <li>Docusaurus</li>
+    <li>Render</li>
+</ul>
 
 ## Conclusão
 

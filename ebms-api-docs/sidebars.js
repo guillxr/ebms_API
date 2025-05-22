@@ -20,12 +20,21 @@ const sidebars = {
     'intro',
     {
       type: 'category',
+      label: 'Configurações',
+      items: [
+        'configuracoes/config'],
+    },
+    {
+      type: 'category',
       label: 'Funcionalidades',
       items: [
         'funcionalidades/Agendamento', 
         'funcionalidades/Doador',
         'funcionalidades/Admins',
-        'funcionalidades/Estoque'],
+        'funcionalidades/Estoque',
+        'funcionalidades/Historico',
+        'funcionalidades/Localidade',
+        'funcionalidades/Validade'],
     },
   ],
 };
