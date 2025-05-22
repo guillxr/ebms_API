@@ -1,12 +1,12 @@
-import { loginValidation, createUserValidation } from './auth.validator.js';
-import {
+const { loginValidation, createUserValidation } = require('./auth.validator');
+const {
   validateCreateDonor,
   validateIdParam,
   validateBloodTypeParam,
   validateUpdateDonor
-} from './donor.validator.js';
+} = require('./donor.validator');
 
-export {
+module.exports = {
   loginValidation,
   createUserValidation,
   validateCreateDonor,
