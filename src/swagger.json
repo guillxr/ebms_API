@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "https://ebms-api.onrender.com/api-docs"
+      "url": "https://ebms-api.onrender.com"
     }
   ],
   "paths": {
