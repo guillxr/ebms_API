@@ -1,8 +1,8 @@
 {
   "openapi": "3.1.1",
   "info": {
-    "title": "API  MEIO AMBIENTE",
-    "description": "Essa api tem como objetivo ver cidades e paises agindo a favor do meio-ambiente",
+    "title": "API  EBMS",
+    "description": "Essa api tem como objetivo ajudar as doações de sangue.",
     "contact": {
       "email": "saveambiente@gmail.com"
     },
