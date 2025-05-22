@@ -97,3 +97,13 @@ model Locality {
   city         String
   state        String
 }
+
+model Validity {
+  id            String   @id @default(uuid())
+  batch         String   @unique
+  quantity      Int
+  expirationDate DateTime
+  status        String   @default("available")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}

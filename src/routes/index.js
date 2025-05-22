@@ -3,25 +3,40 @@
  * @module routes
  */
 
-import donorRoutes from './donor.routes.js';
-import authRoutes from './auth.route.js';
-import histBloodRoutes from './histBlood.route.js';
-import estBloodRoutes from './estBlood.route.js';
-import localityRoutes from './locality.route.js';
+const donorRoutes = require('./donor.routes');
+const authRoutes = require('./auth.route');
+const histBloodroutes = require('./histBlood.route');
+const estBlood = require("./estBlood.route");
+const scheduroutes = require("./scheduling.route");
+const schedulingRoutes = require('./scheduling.route');
+const estBlood = require('./estBlood.route');
+const localityRoute = require('./locality.route');
+const stockValidityRoutes = require('./validity.route');
 
 /**
  * Loads all route groups into the given Express app instance.
  *
  * @function loadRoutes
  * @memberof module:routes
- * @param {import('express').Express} app - The Express application instance.
+ * @param {Object} app - The Express application instance.
+ *
+ * @description
+ * Registers the following route groups:
+ * - `/donors` → handles donor-related endpoints.
+ * - `/admins` → handles admin authentication and management endpoints.
+ * - `/histBlood` → handles blood historical endpoints.
+ * - `/estBlood` → handles blood stock endpoits.
+ * - `/scheduling` → handles scheduling endpoints.
+
  */
 export function loadRoutes(app) {
   app.use('/donors', donorRoutes);
   app.use('/admins', authRoutes);
-  app.use('/histBlood', histBloodRoutes);
-  app.use('/estBlood', estBloodRoutes);
-  app.use('/locality', localityRoutes);
-}
+  app.use('/histBlood', histBloodroutes);
+  app.use('/estBlood', estBlood);
+  app.use('/agendamentos', schedulingRoutes);
+  app.use('/locality', localityRoute);
+  app.use('/validity', stockValidityRoutes);
+};
 
 module.exports = { loadRoutes };
