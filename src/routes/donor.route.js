@@ -8,18 +8,18 @@
  * @module routes/donor.router
  */
 
-const express = require('express');
-const router = express.Router();
-const donorController = require('@controllers/donor.controller');
-const { authenticateJWT } = require('@middlewares/authenticate.middleware');
-const { validate } = require('@middlewares/validateRequest.middleware');
-const {
+import express from 'express';
+import donorController from '@controllers/donor.controller.js';
+import { authenticateJWT } from '@middlewares/authenticate.middleware.js';
+import { validate } from '@middlewares/validateRequest.middleware.js';
+import {
   validateCreateDonor,
   validateIdParam,
   validateBloodTypeParam,
-  validateUpdateDonor,
-} = require('@validators');
+  validateUpdateDonor
+} from '@validators/index.js';
 
+const router = express.Router();
 /**
  * @typedef {import('express').Request} Request
  * @typedef {import('express').Response} Response
