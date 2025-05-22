@@ -1,11 +1,12 @@
-const express = require('express');
-const router = express.Router();
-const authController = require('@controllers/auth.controller');
-const { validate } = require('@middlewares/validateRequest.middleware');
-const {
+import express from 'express';
+import authController from '@controllers/auth.controller.js';
+import { validate } from '@middlewares/validateRequest.middleware.js';
+import {
   loginValidation,
-  createAdminValidation,
-} = require('@validators/auth.validator');
+  createUserValidation
+} from '@validators/auth.validator.js';
+
+const router = express.Router();
 
 /**
  * @module AuthRoutes
@@ -31,13 +32,13 @@ router.post('/login', validate(loginValidation), authController.login);
  *
  * Creates a new admin account with hashed password.
  *
- * @name POST /
+ * @name POST /register
  * @function
  * @memberof module:AuthRoutes
  * @param {express.Request} req - Express request object containing `username` and `password` in the body.
  * @param {express.Response} res - Returns a 201 status with admin details if successful,
  * or 400 if creation fails.
  */
-router.post('/', validate(createAdminValidation), authController.createAdmin);
+router.post('/register', validate(createUserValidation), authController.createUser);
 
 module.exports = router;
