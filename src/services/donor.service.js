@@ -1,5 +1,5 @@
-import donorModel from '@models/donor.model.js';
-import log from '@utils/logger.js';
+const donorModel = require('../models/donor.model');
+const log = require('../utils/logger');
 
 /**
  * @module DonorService
@@ -89,4 +89,4 @@ const DonorService = {
   },
 };
 
-export default DonorService;
+module.exports = DonorService;
