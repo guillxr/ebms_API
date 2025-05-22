@@ -1,14 +1,14 @@
 /**
  * Configuration module for rate limiting.
- * 
+ *
  * Defines the rate limiting parameters for the application.
- * 
+ *
  * @module rateLimits.config
  */
 
 /**
  * Rate limiting configuration object.
- * 
+ *
  * This object specifies the default rate limit settings for the application,
  * including the time window in milliseconds, the maximum number of requests allowed,
  * and the error message to be returned when the limit is exceeded.

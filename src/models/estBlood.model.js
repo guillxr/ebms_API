@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express');
 
 const stockBlood = new express({
   lote: {
@@ -16,9 +16,9 @@ const stockBlood = new express({
   },
   status: {
     type: String,
-    enum: ["disponível", "vencido", "com problema"],
-    default: "disponível",
+    enum: ['disponível', 'vencido', 'com problema'],
+    default: 'disponível',
   },
 });
-const Stock = express("Stock", stockBlood);
+const Stock = express('Stock', stockBlood);
 module.exports = Stock;

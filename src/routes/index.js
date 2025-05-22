@@ -9,6 +9,9 @@ const histBloodroutes = require('./histBlood.route');
 const estBlood = require("./estBlood.route");
 const scheduroutes = require("./scheduling.route");
 const schedulingRoutes = require('./scheduling.route');
+const estBlood = require('./estBlood.route');
+const localityRoute = require('./locality.route');
+const stockValidityRoutes = require('./validity.route');
 
 /**
  * Loads all route groups into the given Express app instance.
@@ -32,7 +35,9 @@ const loadRoutes = (app) => {
   app.use('/histBlood', histBloodroutes);
   app.use('/estBlood', estBlood);
   app.use('/agendamentos', schedulingRoutes);
-  
+  app.use('/locality', localityRoute);
+  app.use('/validity', stockValidityRoutes);
+
 };
 
 module.exports = { loadRoutes };

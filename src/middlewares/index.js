@@ -1,11 +1,11 @@
 /**
  * @module MiddlewareLoader
- * 
- * This module is responsible for loading and applying various middlewares to an Express 
+ *
+ * This module is responsible for loading and applying various middlewares to an Express
  * application.
- * These middlewares enhance security, performance, and error handling, 
+ * These middlewares enhance security, performance, and error handling,
  * as well as provide rate limiting and debugging functionality.
- * 
+ *
  * @requires module:helmet - Middleware for securing HTTP headers.
  * @requires module:compression - Middleware for compressing response bodies.
  * @requires module:cors - Middleware for enabling Cross-Origin Resource Sharing (CORS).
@@ -18,20 +18,20 @@
 
 /**
  * Loads and applies multiple middlewares to the given Express application.
- * 
- * This function sets up essential middlewares for the Express app, such as security 
- * headers, CORS, compression, JSON body parsing, rate limiting, error handling, 
+ *
+ * This function sets up essential middlewares for the Express app, such as security
+ * headers, CORS, compression, JSON body parsing, rate limiting, error handling,
  * and debug logging.
- * 
+ *
  * @function
  * @name loadMiddlewares
  * @param {Object} app - The Express application instance to apply the middlewares to.
  * @returns {void}
- * 
+ *
  * @example
  * const express = require('express');
  * const loadMiddlewares = require('@middlewares/loadMiddlewares');
- * 
+ *
  * const app = express();
  * loadMiddlewares(app);
  * app.listen(3000, () => {

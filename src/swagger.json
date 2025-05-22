@@ -1,14 +1,14 @@
 {
-    "openapi":"3.1.1",
-    "info": {
-        "title": "API  MEIO AMBIENTE",
-        "description": "Essa api tem como objetivo ver cidades e paises agindo a favor do meio-ambiente",
-        "termsOfService": "http://localhost:3000/terms",
-        "contact": {
-            "email": "llielzinh@gmail.com"
-        },
-        "version": "1.0.0"
+  "openapi": "3.1.1",
+  "info": {
+    "title": "API  MEIO AMBIENTE",
+    "description": "Essa api tem como objetivo ver cidades e paises agindo a favor do meio-ambiente",
+    "termsOfService": "http://localhost:3000/terms",
+    "contact": {
+      "email": "llielzinh@gmail.com"
     },
+    "version": "1.0.0"
+  },
   "servers": [
     {
       "url": "http://localhost:3000"
@@ -16,14 +16,14 @@
   ],
   "paths": {
     "/histBlood/create": {
-      "post":{
+      "post": {
         "summary": "Efetua o cadastro dos tipos sanguíneos.",
         "description": "Cria e insere os dados no database e ápos a criação retorna o resultado.",
-        "operationId": "create" ,
+        "operationId": "create",
         "tags": ["Histórico de Sangue"],
         "responses": {
           "201": {
-            "description": "Cria as tabelas dos tipos sanguíneos.",
+            "description": "Cria a tabela do tipos sanguíneos.",
             "content": {
               "application/json": {
                 "schema": {
@@ -57,15 +57,15 @@
                 }
               }
             }
-          }  
+          }
         }
       }
     },
     "/histBlood/": {
-      "get":{
+      "get": {
         "summary": "Apresenta as médias de cada tipo sanguíneo.",
         "description": "Apresenta quantas bolsas de sangue, menor e maior tempo e o tempo médio em dias que cada tipo sanguíneo fica guardado até ser usado.",
-        "operationId": "pegaInfo",
+        "operationId": "read",
         "tags": ["Histórico de Sangue"],
         "responses": {
           "200": {
@@ -103,15 +103,15 @@
                 }
               }
             }
-          }  
+          }
         }
       }
     },
-    "/histBlood/{type}":{
-      "get":{
+    "/histBlood/{type}": {
+      "get": {
         "summary": "Pegar tipo de sangue especifico.",
         "description": "Retorna dados do tipo de sangue desejado.",
-        "operationId": "consultaCountry",
+        "operationId": "readtype",
         "tags": ["Histórico de Sangue"],
         "parameters": [
           {
@@ -175,12 +175,12 @@
                 }
               }
             }
-          } 
+          }
         }
       }
     },
     "/histBlood/update/{blood}": {
-      "put":{
+      "put": {
         "summary": "Atualiza as médias de um tipo sanguíneo.",
         "description": "Atualiza as médias do tipo sanguíneo escolhido usando 'sent' para calculo dos demais campos do object do io sanguíneo que se deseja atualizar, sent são os dias que o sangue que acabo de ser utilizado ficou em espera para uso.",
         "operationId": "update",
@@ -247,12 +247,12 @@
                 }
               }
             }
-          }  
+          }
         }
       }
     },
     "/histBlood/revert/{bld}": {
-      "put":{
+      "put": {
         "summary": "Desfaz a última alteração de um tipo sanguíneo.",
         "description": "Desfaz a ultima alteração feita, caso o update for feito errado pode ser usado para reverter a última alteração.",
         "operationId": "revertLast",
@@ -322,19 +322,19 @@
                 }
               }
             }
-          }  
+          }
         }
       }
     },
     "/histBlood/delete": {
       "delete": {
-        "summary": "Deleta as tabelas dos tipos sanguíneos.",
-        "description": "Deleta as tabelas dos tipos sanguíneos do banco de dados.",
+        "summary": "Deleta os dados tabela dos tipos sanguíneos.",
+        "description": "Deleta os dados dos tipos sanguíneos do banco de dados.",
         "operationId": "delete",
         "tags": ["Histórico de Sangue"],
         "responses": {
           "200": {
-            "description": "Deleta as tabelas dos tipos sanguíneos.",
+            "description": "Deleta a tabela dos tipos sanguíneos.",
             "content": {
               "application/json": {
                 "schema": {
@@ -371,6 +371,956 @@
           }
         }
       }
+    },
+    "/estBlood/stock": {
+      "post": {
+        "summary": "Efetua a criação dos estoque sanguíneo.",
+        "description": "Cria a tabela de estoque sanguíneo.",
+        "operationId": "adicionarLote",
+        "tags": ["Estoque de Sangue"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "lote": { "type": "string" },
+                  "quantidade": { "type": "number" },
+                  "dataVencimento": { "type": "string", "format": "date" },
+                  "status": {
+                    "type": "string",
+                    "enum": ["disponível", "vencido", "com problema"]
+                  }
+                },
+                "required": ["lote", "quantidade", "dataVencimento"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Cria a tabela do estoque sanguíneo.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "est": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro do lado do cliente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "est": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Apresenta o estoque sanguíneo.",
+        "description": "Apresenta os dados da tabela de estoque sanguíneo.",
+        "operationId": "consultarEstoque",
+        "tags": ["Estoque de Sangue"],
+        "responses": {
+          "204": {
+            "description": "Retorna os dados sobre o histórico.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "est": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/estGet"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Não encontrado lote do estoque sanguíneo.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "est": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/estGet"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "est": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/estGet"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/estBlood/stock/:id": {
+      "put": {
+        "summary": "Atualiza o dado desejado do estoque sanguíneo.",
+        "description": "Atualiza o dado desejado escolhido do estoque sanguíneo.",
+        "operationId": "atualizarQuantidade",
+        "tags": ["Estoque de Sangue"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Id para busca.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "quantidade": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Atualiza o histórico do tipo de sangue desejado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "est": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/estGet"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Não encontrado lote do estoque sanguíneo.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "est": {
+                      "type": "object",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "est": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/estGet"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deleta dado do estoque sanguíneo.",
+        "description": "Deleta o lote desejado do estoque sanguíneo do banco de dados.",
+        "operationId": "removerLote",
+        "tags": ["Estoque de Sangue"],
+        "responses": {
+          "204": {
+            "description": "Deleta o lote do estoque sanguíneo.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "loc": {
+                      "type": "object",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Não encontrado lote do estoque sanguíneo.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "est": {
+                      "type": "object",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "est": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/estGet"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/locality/": {
+      "post": {
+        "summary": "Efetua a criação dos estoque sanguíneo.",
+        "description": "Cria a tabela de estoque sanguíneo.",
+        "operationId": "createLocality",
+        "tags": ["Localização"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "street": { "type": "string" },
+                  "neighborhood": { "type": "string" },
+                  "zip": { "type": "string" },
+                  "city": { "type": "string" },
+                  "state": { "type": "string" }
+                },
+                "required": ["lote", "quantidade", "dataVencimento"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Cria a tabela da localização do ponto de doação.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "loc": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro do lado do cliente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "loc": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Apresenta as localizações dos pontos de doação.",
+        "description": "Apresenta todas localizações dos pontos de doação.",
+        "operationId": "getAlllLocality",
+        "tags": ["Localização"],
+        "responses": {
+          "200": {
+            "description": "Retorna as localizações dos pontos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "loc": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/locGet"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "loc": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/locGet"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/locality/:id": {
+      "put": {
+        "summary": "Atualiza o dado desejado do estoque sanguíneo.",
+        "description": "Atualiza o dado desejado escolhido do estoque sanguíneo.",
+        "operationId": "atualizarQuantidade",
+        "tags": ["Localização"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Id para busca.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "street": { "type": "string" },
+                  "neighborhood": { "type": "string" },
+                  "zip": { "type": "string" },
+                  "city": { "type": "string" },
+                  "state": { "type": "string" }
+                },
+                "required": ["lote", "quantidade", "dataVencimento"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Atualiza o histórico do tipo de sangue desejado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "loc": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/locGet"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "loc": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/locGet"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deleta a localização.",
+        "description": "Deleta a localização desejada da tabela locality do banco de dados.",
+        "operationId": "deletLocality",
+        "tags": ["Localização"],
+        "responses": {
+          "204": {
+            "description": "Deleta a localização do banco de dados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "loc": {
+                      "type": "object",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "loc": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/histGet"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admins/": {
+      "post": {
+        "summary": "Cria um novo administrador.",
+        "operationId": "createAdmin",
+        "tags": ["Administração"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string" },
+                  "password": { "type": "string", "format": "password" }
+                },
+                "required": ["username", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cria uma conta de administrador.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciais inválidas ou ausentes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admins/login": {
+      "post": {
+        "summary": "Acessar a conta administrador.",
+        "operationId": "login",
+        "tags": ["Administração"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string" },
+                  "password": { "type": "string", "format": "password" }
+                },
+                "required": ["username", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Acessa administrador.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciais inválidas ou ausentes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/donors/": {
+      "post": {
+        "summary": "Cadastra doador.",
+        "operationId": "create",
+        "tags": ["Doador"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Donor"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cadastado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Cheque as informações.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Consulta doador.",
+        "description": "Consulta todos os doadores.",
+        "operationId": "getAll",
+        "tags": ["Doador"],
+        "responses": {
+          "200": {
+            "description": "Consulta com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/donors/:id": {
+      "get": {
+        "summary": "Consulta doador pelo id.",
+        "description": "Consulta o doador pedido no id.",
+        "operationId": "getById",
+        "tags": ["Doador"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Id para busca.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Consulta com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Consulta doador pelo id.",
+        "description": "Consulta o doador pedido no id.",
+        "operationId": "update",
+        "tags": ["Doador"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Id para busca.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Consulta com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Cheque o id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Consulta doador pelo id.",
+        "description": "Consulta o doador pedido no id.",
+        "operationId": "delete",
+        "tags": ["Doador"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Id para busca.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Consulta com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Cheque o id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/donors//blood-type/:bloodType": {
+      "get": {
+        "summary": "Consulta doador pelo tipo sanguíneo.",
+        "description": "Consulta o doador pedido pelo bloodType.",
+        "operationId": "getByBloodType",
+        "tags": ["Doador"],
+        "parameters": [
+          {
+            "name": "bloodType",
+            "in": "path",
+            "required": true,
+            "description": "bloodType para busca.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Consulta com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Cheque as informações.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "object",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -381,6 +1331,91 @@
           "data": {
             "type": "array"
           }
+        }
+      },
+      "estGet": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array"
+          }
+        }
+      },
+      "locGet": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array"
+          }
+        }
+      },
+      "Donor": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nome completo do doador"
+          },
+          "birth_date": {
+            "type": "string",
+            "format": "date",
+            "description": "Data de nascimento do doador"
+          },
+          "blood_type": {
+            "type": "string",
+            "description": "Tipo sanguíneo do doador"
+          },
+          "gender": {
+            "type": "string",
+            "description": "Gênero do doador"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Número de telefone do doador"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Endereço de e-mail do doador"
+          },
+          "identity_document": {
+            "type": "string",
+            "description": "Documento de identidade do doador"
+          },
+          "address": {
+            "type": "string",
+            "description": "Endereço do doador"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "float",
+            "description": "Latitude da localização do doador"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "float",
+            "description": "Longitude da localização do doador"
+          },
+          "last_donation": {
+            "type": "string",
+            "format": "date",
+            "description": "Data da última doação"
+          },
+          "donation_frequency": {
+            "type": "string",
+            "description": "Frequência das doações do doador"
+          },
+          "eligibility_status": {
+            "type": "string",
+            "description": "Status de elegibilidade para doação"
+          },
+          "contact_preferences": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Preferências de contato do doador"
+          } 
         }
       }
     }
