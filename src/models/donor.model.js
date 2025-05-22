@@ -22,9 +22,8 @@
  *
  * @namespace Donor
  */
-import log from '@utils/logger';
-
-import { prisma } from '../prisma/client.js';
+const log = require('../utils/logger');
+const { prisma } = require('../../prisma/client');
 
 const Donor = {
   /**
