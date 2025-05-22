@@ -11,7 +11,9 @@
     "prepare": "husky install",
     "ci": "npx eslint . --ext .js",
     "format": "prettier --write .",
-    "posinstall": "npx prisma generate"
+    "posinstall": "npx prisma generate",
+    "prisma:migrate": "prisma migrate dev --schema=prisma/schema.prisma",
+    "prisma:generate": "prisma generate --schema=prisma/schema.prisma"
   },
   "_moduleAliases": {
     "@src": "src",

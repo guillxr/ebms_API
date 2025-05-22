@@ -1,6 +1,7 @@
 const estoqueService = require('../services/estBlood.service.js');
 
 class EstoqueController {
+  // CRUD completo do controller, e verificação de criação
   async adicionarLote(req, res) {
     try {
       const lote = await estoqueService.adicionarLote(req.body);
@@ -13,7 +14,7 @@ class EstoqueController {
   async consultarEstoque(req, res) {
     try {
       const estoque = await estoqueService.consultarEstoque();
-      res.status(200).json(estoque);
+      res.status(200).json({res:estoque});
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
