@@ -2,24 +2,42 @@
 const express = require('express');
 const router = express.Router();
 const histBloodController = require('@controllers/histBlood.controller');
+const { authenticateJWT } = require('../middlewares/authenticate.middleware');
+const { validate } = require('../middlewares/validateRequest.middleware');
+const {
+  validateTypeParam,
+  validateBloodParam,
+  validateBldParam,
+  validateSentBody,
+} = require('../validators');
 
 // Creates initial blood type data.
-router.post('/create', histBloodController.create);
+router.post('/create', authenticateJWT, histBloodController.create);
 
 // Reading route for all blood types.
 router.get('/', histBloodController.read);
 
 // Route to reading a desired blood type.
-router.get('/:type', histBloodController.readtype);
+router.get('/:type', validate(validateTypeParam), histBloodController.readtype);
 
 // Blood Type Upgrade Route.
-router.put('/update/:blood', histBloodController.update);
+router.put(
+  '/update/:blood',
+  authenticateJWT,
+  validate([...validateBloodParam, ...validateSentBody]),
+  histBloodController.update
+);
 
 // Blood Type Reversal Route.
-router.put('/revert/:bld', histBloodController.revertLast);
+router.put(
+  '/revert/:bld',
+  authenticateJWT,
+  validate(validateBldParam),
+  histBloodController.revertLast
+);
 
 // Delete changes and return everything to its initial state.
-router.delete('/delete', histBloodController.delete);
+router.delete('/delete', authenticateJWT, histBloodController.delete);
 
 // Exporting the router.
 module.exports = router;

@@ -43,6 +43,7 @@ const compression = require('compression');
 const cors = require('cors');
 const config = require('@config');
 const express = require('express');
+const cookieParser = require('cookie-parser');
 
 const { createLimiter } = require('./rateLimits.middleware');
 const { debugLogger } = require('./debugLogger.middleware');
@@ -56,6 +57,7 @@ const loadMiddlewares = (app) => {
   app.use(compression()); // Compresses response bodies for better performance
   app.use(express.json()); // Parses incoming JSON payloads
   app.use(express.urlencoded({ extended: true })); // Parses incoming URL-encoded payloads
+  app.use(cookieParser()); // Parses cookies from the request headers
 
   app.use(createLimiter()); // Applies rate limiting middleware
   app.use(errorHandler); // Applies custom error handling middleware

@@ -11,7 +11,7 @@ const authController = {
    *
    * @async
    * @function login
-   * @param {import('express').Request} req - Express request object containing username and password in the body.
+ * @param {import('express').Request} req - Express request object containing email and password in the body.
    * @param {import('express').Response} res - Express response object used to return the result.
    * @returns {Promise<void>}
    * Sends a 200 response with credentials if successful,
@@ -21,6 +21,10 @@ const authController = {
     const { email, password } = req.body;
     try {
       const credentials = await authService.findUser(email, password);
+      res.cookie('token', credentials.token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+      });
       res.status(200).json(credentials);
     } catch (err) {
       log(`Login failed: ${err.message}`, 'warn');
@@ -34,7 +38,7 @@ const authController = {
    *
    * @async
    * @function createAdmin
-   * @param {import('express').Request} req - Express request object containing username and password in the body.
+ * @param {import('express').Request} req - Express request object containing email and password in the body.
    * @param {import('express').Response} res - Express response object used to return the result.
    * @returns {Promise<void>}
    * Sends a 201 response with the new admin data if successful,

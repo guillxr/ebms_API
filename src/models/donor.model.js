@@ -126,11 +126,8 @@ const Donor = {
       });
 
       if (!existingUser) {
-        log(
-          `Donor creation failed: username "${existingUser.name}" already exists`,
-          'warn'
-        );
-        throw new Error('User already exists');
+        log('Donor deletion failed: donor not found', 'warn');
+        throw new Error('Donor not found');
       }
 
       return await prisma.donor.delete({ where: { id } });

@@ -10,7 +10,7 @@ Feita com carinho para facilitar a vida de quem salva vidas! 🚑❤️
 
 - **Node.js** (v22+)
 - **Express.js**
-- **MongoDB** (via Mongoose)
+- **Prisma** (com PostgreSQL)
 - **Swagger** (documentação)
 - **Nodemon** (dev)
 - **Helmet, CORS, Compression** (segurança e performance)
@@ -24,6 +24,7 @@ Feita com carinho para facilitar a vida de quem salva vidas! 🚑❤️
 **POST** `/agendamentos`
 
 **Body:**
+
 ```json
 {
   "usuario_id": "664b1f2e5e4a2c001f8e4a1b",
@@ -33,6 +34,7 @@ Feita com carinho para facilitar a vida de quem salva vidas! 🚑❤️
 ```
 
 **Resposta:**
+
 ```json
 {
   "_id": "6650a1c2e5e4a2c001f8e4a1c",
@@ -49,6 +51,7 @@ Feita com carinho para facilitar a vida de quem salva vidas! 🚑❤️
 **GET** `/agendamentos`
 
 **Resposta:**
+
 ```json
 [
   {
@@ -66,6 +69,7 @@ Feita com carinho para facilitar a vida de quem salva vidas! 🚑❤️
 **PUT** `/agendamentos/:id`
 
 **Body:**
+
 ```json
 {
   "local": "Hemocentro Zona Sul",
@@ -74,6 +78,7 @@ Feita com carinho para facilitar a vida de quem salva vidas! 🚑❤️
 ```
 
 **Resposta:**
+
 ```json
 {
   "_id": "6650a1c2e5e4a2c001f8e4a1c",
@@ -100,6 +105,7 @@ Status `204 No Content` (sem corpo)
 **POST** `/donors`
 
 **Body:**
+
 ```json
 {
   "nome": "Maria Silva",
@@ -109,6 +115,7 @@ Status `204 No Content` (sem corpo)
 ```
 
 **Resposta:**
+
 ```json
 {
   "_id": "6650b2d3e5e4a2c001f8e4a2d",
@@ -123,6 +130,7 @@ Status `204 No Content` (sem corpo)
 **GET** `/donors`
 
 **Resposta:**
+
 ```json
 [
   {
@@ -139,6 +147,7 @@ Status `204 No Content` (sem corpo)
 **GET** `/donors/:id`
 
 **Resposta:**
+
 ```json
 {
   "_id": "6650b2d3e5e4a2c001f8e4a2d",
@@ -153,6 +162,7 @@ Status `204 No Content` (sem corpo)
 **GET** `/donors/blood-type/O+`
 
 **Resposta:**
+
 ```json
 [
   {
@@ -169,6 +179,7 @@ Status `204 No Content` (sem corpo)
 **PUT** `/donors/:id`
 
 **Body:**
+
 ```json
 {
   "nome": "Maria S. Silva"
@@ -176,6 +187,7 @@ Status `204 No Content` (sem corpo)
 ```
 
 **Resposta:**
+
 ```json
 {
   "_id": "6650b2d3e5e4a2c001f8e4a2d",
@@ -194,50 +206,59 @@ Status `204 No Content` (sem corpo)
 
 ---
 
-## 🛡️ Rotas de Admins (`/admins`)
+## 🛡️ Rotas de Autenticação (`/auth`)
 
-### Criar admin
+### Registrar admin
 
-**POST** `/admins`
+**POST** `/auth/register`
 
 **Body:**
+
 ```json
 {
-  "username": "admin",
+  "email": "admin@email.com",
   "password": "senha123"
 }
 ```
 
 **Resposta:**
+
 ```json
 {
   "_id": "6650c3e4e5e4a2c001f8e4a3e",
-  "username": "admin"
+  "email": "admin@email.com"
 }
 ```
 
 ### Login
 
-**POST** `/admins/login`
+**POST** `/auth/login`
 
 **Body:**
+
 ```json
 {
-  "username": "admin",
+  "email": "admin@email.com",
   "password": "senha123"
 }
 ```
 
 **Resposta:**
+
 ```json
 {
   "token": "jwt.token.aqui",
   "user": {
     "_id": "6650c3e4e5e4a2c001f8e4a3e",
-    "username": "admin"
+    "email": "admin@email.com"
   }
 }
 ```
+
+Utilize o token retornado em rotas que exigem autenticação enviando o cabeçalho
+`Authorization: Bearer <token>`. As operações de POST, PUT e DELETE em
+`/estBlood`, `/histBlood`, `/locality`, `/scheduling` e `/validity` são
+protegidas.
 
 ---
 
@@ -248,6 +269,7 @@ Status `204 No Content` (sem corpo)
 **POST** `/estBlood/stock`
 
 **Body:**
+
 ```json
 {
   "tipo": "A+",
@@ -256,6 +278,7 @@ Status `204 No Content` (sem corpo)
 ```
 
 **Resposta:**
+
 ```json
 {
   "_id": "6650d4f5e5e4a2c001f8e4a4f",
@@ -269,6 +292,7 @@ Status `204 No Content` (sem corpo)
 **GET** `/estBlood/stock`
 
 **Resposta:**
+
 ```json
 [
   {
@@ -284,6 +308,7 @@ Status `204 No Content` (sem corpo)
 **PUT** `/estBlood/stock/:id`
 
 **Body:**
+
 ```json
 {
   "quantidade": 15
@@ -291,6 +316,7 @@ Status `204 No Content` (sem corpo)
 ```
 
 **Resposta:**
+
 ```json
 {
   "_id": "6650d4f5e5e4a2c001f8e4a4f",
@@ -315,6 +341,7 @@ Status `204 No Content` (sem corpo)
 **POST** `/histBlood/create`
 
 **Body:**
+
 ```json
 {
   "tipo": "B-",
@@ -324,6 +351,7 @@ Status `204 No Content` (sem corpo)
 ```
 
 **Resposta:**
+
 ```json
 {
   "_id": "6650e5a6e5e4a2c001f8e4a5a",
@@ -338,6 +366,7 @@ Status `204 No Content` (sem corpo)
 **GET** `/histBlood`
 
 **Resposta:**
+
 ```json
 [
   {
@@ -354,6 +383,7 @@ Status `204 No Content` (sem corpo)
 **GET** `/histBlood/B-`
 
 **Resposta:**
+
 ```json
 {
   "_id": "6650e5a6e5e4a2c001f8e4a5a",

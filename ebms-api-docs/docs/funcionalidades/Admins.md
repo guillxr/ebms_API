@@ -10,17 +10,17 @@ sidebar_position: 4
 
 **Body:**
 ```json
-  {
-  "username": "admin",
+{
+  "email": "admin@email.com",
   "password": "senha123"
 }
 ```
 
 **Resposta:**
 ```json
-  {
+{
   "_id": "6650c3e4e5e4a2c001f8e4a3e",
-  "username": "admin"
+  "email": "admin@email.com"
 }
 ```
 
@@ -30,19 +30,19 @@ sidebar_position: 4
 
 **Body:**
 ```json
-  {
-  "username": "admin",
+{
+  "email": "admin@email.com",
   "password": "senha123"
 }
 ```
 
 **Resposta:**
 ```json
-  {
+{
   "token": "jwt.token.aqui",
   "user": {
     "_id": "6650c3e4e5e4a2c001f8e4a3e",
-    "username": "admin"
+    "email": "admin@email.com"
   }
 }
 ```

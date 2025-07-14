@@ -28,12 +28,17 @@ const config = require('@config');
  * @throws {Error} If the token is missing or invalid, a 403 status code is returned with an error message.
  */
 const authenticateJWT = (req, res, next) => {
-  const token = req.header('Authorization')?.split(' ')[1];
+  const token =
+    req.header('Authorization')?.split(' ')[1] || req.cookies?.token;
 
-  if (!token) res.status(403).json({ error: 'missing token!' });
+  if (!token) {
+    return res.status(403).json({ error: 'missing token!' });
+  }
 
   jwt.verify(token, config.jwtSecret, (err, user) => {
-    if (err) res.status(403).json({ error: err.message });
+    if (err) {
+      return res.status(403).json({ error: err.message });
+    }
     req.user = user;
     next();
   });

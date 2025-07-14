@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://neondb_owner:npg_Tiz2XjEN4hqk@ep-red-credit-a4ecrlrd-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require"
+  url      = "postgresql://neondb_owner:npg_sX73HBdTZpSx@ep-holy-cell-aceqfjd9-pooler.sa-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 }
 
 model User {
@@ -17,6 +17,7 @@ model User {
 
   admin Admin? @relation("AdminUser")
   donor Donor? @relation("DonorUser")
+  scheduling Scheduling[]
 }
 
 model Admin {
@@ -120,4 +121,21 @@ enum status {
   disponivel
   vencido
   com_problema
+}
+
+enum SchedulingStatus {
+  agendado
+  cancelado
+  concluido
+}
+
+model Scheduling {
+  id              String            @id @default(uuid())
+  usuario_id      String
+  user            User              @relation(fields: [usuario_id], references: [id])
+  data_agendamento DateTime
+  local           String?
+  status          SchedulingStatus  @default(agendado)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
 }

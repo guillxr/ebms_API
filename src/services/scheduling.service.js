@@ -1,25 +1,27 @@
-const Agenda = require("../models/scheduling.model.js");
+const { prisma } = require('../../prisma/client');
 
 class ServicoAgendamento {
     // Cria um novo agendamento
     async criarAgendamento(appointmentData) {
-        const appointment = new Agenda(appointmentData);
-        return await appointment.save();
+        return await prisma.scheduling.create({ data: appointmentData });
     }
-    
+
     // Lista todos os agendamentos
     async listarAgendamentos() {
-        return await Agenda.find();
+        return await prisma.scheduling.findMany();
     }
-    
+
     // Atualiza um agendamento pelo ID
     async atualizarAgendamento(id, appointmentData) {
-        return await Agenda.findByIdAndUpdate(id, appointmentData, { new: true });
+        return await prisma.scheduling.update({
+            where: { id },
+            data: appointmentData,
+        });
     }
-    
+
     // Deleta um agendamento pelo ID
     async deletarAgendamento(id) {
-        return await Agenda.findByIdAndDelete(id);
+        return await prisma.scheduling.delete({ where: { id } });
     }
 }
 

@@ -25,5 +25,5 @@ module.exports = {
   port: 5000,
   debug: false,
   logging: 'error',
-  jwtSecret: process.env.JWT_SECRECT || 'M4_PdA',
+  jwtSecret: process.env.JWT_SECRET || 'M4_PdA',
 };

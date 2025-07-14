@@ -6,7 +6,7 @@
 // Criação dos dados
     async adicionarLote(loteData) {
       try {
-        prisma.stock.create({
+        const novoLote = await prisma.stock.create({
           data: {
             id: loteData.id,
             lote: loteData.lote,
@@ -15,7 +15,7 @@
             status: loteData.status,
           },
         });
-        return "Lote criado com sucesso!";
+        return novoLote;
       } catch (error) {
         console.error("Error creating lote:", error);
         throw new Error("Erro ao criar lote");

@@ -3,8 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const log = require('../utils/logger');
 const { prisma } = require('../../prisma/client');
-
-const JWT_SECRET = process.env.JWT_SECRET || 'supersecret';
+const { jwtSecret } = require('@config');
 
 const authService = {
   /**
@@ -36,7 +35,11 @@ const authService = {
       throw new Error('Invalid password');
     }
 
-    const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '1d' });
+    const token = jwt.sign(
+      { id: user.id, role: user.role },
+      jwtSecret,
+      { expiresIn: '1d' }
+    );
 
     return {
       token,

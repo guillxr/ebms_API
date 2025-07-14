@@ -22,7 +22,7 @@ const router = express.Router();
  * @name POST /login
  * @function
  * @memberof module:AuthRoutes
- * @param {express.Request} req - Express request object containing `username` and `password` in the body.
+ * @param {express.Request} req - Express request object containing `email` and `password` in the body.
  * @param {express.Response} res - Returns a 200 status with a token and user info if successful,
  * or 401 if authentication fails.
  */
@@ -36,7 +36,7 @@ router.post('/login', validate(loginValidation), authController.login);
  * @name POST /register
  * @function
  * @memberof module:AuthRoutes
- * @param {express.Request} req - Express request object containing `username` and `password` in the body.
+ * @param {express.Request} req - Express request object containing `email` and `password` in the body.
  * @param {express.Response} res - Returns a 201 status with admin details if successful,
  * or 400 if creation fails.
  */
