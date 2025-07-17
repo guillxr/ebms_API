@@ -16,8 +16,10 @@ const validateCreateStock = [
     .isInt({ min: 0 }).withMessage('quantidade must be a number'),
   body('validade')
     .notEmpty().withMessage('validade is required')
-    .isISO8601().withMessage('validade must be a valid date'),
-  body('status').optional().isString(),
+    .isISO8601().withMessage('validade must be a valid ISO date'),
+  body('status')
+    .notEmpty().withMessage('status is required')
+    .isString().withMessage('status must be a string'),
 ];
 
 const validateStockIdParam = [
@@ -27,8 +29,14 @@ const validateStockIdParam = [
 const validateUpdateStock = [
   ...validateStockIdParam,
   body('quantidade')
-    .notEmpty().withMessage('quantidade is required')
+    .optional()
     .isInt({ min: 0 }).withMessage('quantidade must be a number'),
+  body('validade')
+    .optional()
+    .isISO8601().withMessage('validade must be a valid ISO date'),
+  body('status')
+    .optional()
+    .isString().withMessage('status must be a string'),
   body('blood_type')
     .optional()
     .isIn(validBloodTypes).withMessage('invalid blood type'),

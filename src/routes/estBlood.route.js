@@ -11,19 +11,26 @@ const {
 
 const router = express.Router();
 
+// Criar novo lote
 router.post(
   '/stock',
   authenticateJWT,
   validate(validateCreateStock),
   estoqueController.adicionarLote
 );
+
+// Consultar todos os lotes
 router.get('/stock', estoqueController.consultarEstoque);
+
+// Atualizar lote (vários campos)
 router.put(
   '/stock/:id',
   authenticateJWT,
   validate(validateUpdateStock),
-  estoqueController.atualizarQuantidade
+  estoqueController.atualizarLote
 );
+
+// Remover lote
 router.delete(
   '/stock/:id',
   authenticateJWT,
