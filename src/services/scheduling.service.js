@@ -8,7 +8,20 @@ class ServicoAgendamento {
 
     // Lista todos os agendamentos
     async listarAgendamentos() {
-        return await prisma.scheduling.findMany();
+        return await prisma.scheduling.findMany({
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        donor: {
+                            select: {
+                                name: true,
+                            },
+                        },
+                    },
+                },
+            },
+        });
     }
 
     // Atualiza um agendamento pelo ID
