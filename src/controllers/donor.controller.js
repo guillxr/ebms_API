@@ -179,18 +179,23 @@ const donorController = {
   delete: async (req, res) => {
     try {
       log(`Deleting donor with ID: ${req.params.id}...`, 'info');
-      await donorService.deleteDonor(req.params.id);
+
+      const result = await donorService.deleteDonor(req.params.id);
+
       res.status(200).json({
-        message: 'Donor deleted successfully',
+        message: 'Donor and associated user deleted successfully',
+        data: result, // pode retornar userId ou id deletado, se quiser
       });
-      log(`Donor deleted successfully: ${req.params.id}`, 'info');
+
+      log(`Donor and user deleted successfully: ${req.params.id}`, 'info');
     } catch (err) {
+      log(`Error deleting donor: ${err.message}`, 'error');
       res.status(400).json({
         error: 'Error deleting donor',
         details: err.message,
       });
     }
-  },
+  }
 };
 
 module.exports = donorController;

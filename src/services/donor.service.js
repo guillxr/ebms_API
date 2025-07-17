@@ -1,97 +1,63 @@
-const donorModel = require('../models/donor.model');
+const { prisma } = require('../../prisma/client');
 const log = require('../utils/logger');
 
-/**
- * @module DonorService
- */
 const DonorService = {
-  /**
-   * Retrieves all donors from the database.
-   *
-   * @function
-   * @name getAllDonors
-   * @returns {Promise<Array>}
-   */
   getAllDonors: async () => {
-    return await donorModel.findAll();
+    return await prisma.donor.findMany();
   },
 
-  /**
-   * Retrieves a donor by their ID.
-   *
-   * @function
-   * @name getDonorById
-   * @param {string} id
-   * @throws {Error}
-   * @returns {Promise<Object>}
-   */
-getDonorById: async (id) => {
-  let donor = await donorModel.findById(id);
+  getDonorById: async (id) => {
+    let donor = await prisma.donor.findUnique({ where: { id } });
 
-  // Se não encontrar pelo _id, tenta encontrar pelo userId
-  if (!donor) {
-    log(`Donor with ID ${id} not found. Trying by userId...`, 'info');
-    donor = await donorModel.findByUserId?.(id);
-  }
-  if (!donor) {
-    log(`Donor with ID or userId ${id} not found.`, 'warn');
-    throw new Error('Donor not found');
-  }
-  return donor;
-},
+    if (!donor) {
+      log(`Donor with ID ${id} not found. Trying by userId...`, 'info');
+      donor = await prisma.donor.findUnique({ where: { userId: id } });
+    }
 
-  /**
-   * Retrieves donors by blood type.
-   *
-   * @function
-   * @name getByBloodType
-   * @param {string} bloodType
-   * @throws {Error}
-   * @returns {Promise<Array>}
-   */
+    if (!donor) {
+      log(`Donor with ID or userId ${id} not found.`, 'warn');
+      throw new Error('Donor not found');
+    }
+
+    return donor;
+  },
+
   getByBloodType: async (bloodType) => {
     if (!bloodType) {
       log('Blood type is required to search donors.', 'error');
       throw new Error('Blood type is required');
     }
-    return await donorModel.findByBloodType(bloodType);
+
+    return await prisma.donor.findMany({ where: { blood_type: bloodType } });
   },
 
-  /**
-   * Updates donor information.
-   *
-   * @function
-   * @name updateDonor
-   * @param {string} id
-   * @param {Object} data
-   * @throws {Error}
-   * @returns {Promise<Object>}
-   */
   updateDonor: async (id, data) => {
-    if (!id) {
-      throw new Error('ID is required');
-    }
-    if (!data) {
-      throw new Error('Update data is required');
-    }
-    return await donorModel.update(id, data);
+    if (!id) throw new Error('ID is required');
+    if (!data) throw new Error('Update data is required');
+
+    return await prisma.donor.update({
+      where: { id },
+      data,
+    });
   },
 
-  /**
-   * Deletes a donor by ID.
-   *
-   * @function
-   * @name deleteDonor
-   * @param {string} id
-   * @throws {Error}
-   * @returns {Promise<void>}
-   */
   deleteDonor: async (id) => {
-    if (!id) {
-      throw new Error('ID is required');
+    if (!id) throw new Error('ID is required');
+
+    const donor = await prisma.donor.findUnique({ where: { id } });
+
+    if (!donor) {
+      log(`Donor with ID ${id} not found`, 'warn');
+      throw new Error('Donor not found');
     }
 
-    return await donorModel.delete(id);
+    // Transação para deletar donor + user juntos
+    await prisma.$transaction([
+      prisma.donor.delete({ where: { id } }),
+      prisma.user.delete({ where: { id: donor.userId } }),
+    ]);
+
+    log(`Donor ${id} and user ${donor.userId} deleted.`, 'info');
   },
 };
 
