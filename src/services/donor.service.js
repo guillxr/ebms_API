@@ -25,14 +25,20 @@ const DonorService = {
    * @throws {Error}
    * @returns {Promise<Object>}
    */
-  getDonorById: async (id) => {
-    const donor = await donorModel.findById(id);
-    if (!donor) {
-      log(`Donor with ID ${id} not found.`, 'warn');
-      throw new Error('Donor not found');
-    }
-    return donor;
-  },
+getDonorById: async (id) => {
+  let donor = await donorModel.findById(id);
+
+  // Se não encontrar pelo _id, tenta encontrar pelo userId
+  if (!donor) {
+    log(`Donor with ID ${id} not found. Trying by userId...`, 'info');
+    donor = await donorModel.findByUserId?.(id);
+  }
+  if (!donor) {
+    log(`Donor with ID or userId ${id} not found.`, 'warn');
+    throw new Error('Donor not found');
+  }
+  return donor;
+},
 
   /**
    * Retrieves donors by blood type.

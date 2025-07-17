@@ -85,13 +85,16 @@ const donorController = {
    */
   getById: async (req, res) => {
     try {
-      log(`Fetching donor by ID: ${req.params.id}...`, 'info');
-      const donor = await donorService.getDonorById(req.params.id);
+      const idOrUserId = req.params.id;
+      log(`Fetching donor by ID or userId: ${idOrUserId}...`, 'info');
+      
+      const donor = await donorService.getDonorById(idOrUserId);
+      
       res.status(200).json(donor);
       log(`Donor fetched successfully: ${donor.id}`, 'info');
     } catch (err) {
       log(
-        `Error fetching donor by ID ${req.params.id}: ${err.message}`,
+        `Error fetching donor by ID or userId ${req.params.id}: ${err.message}`,
         'error'
       );
       res.status(404).json({

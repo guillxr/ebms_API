@@ -103,8 +103,8 @@ router.get(
  */
 router.put(
   '/:id',
-  validate(validateUpdateDonor),
   authenticateJWT,
+  validate(validateUpdateDonor),
   donorController.update
 );
 
