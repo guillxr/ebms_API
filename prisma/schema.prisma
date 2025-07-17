@@ -112,6 +112,7 @@ model Validity {
 model Stock {
   id             Int      @id @default(autoincrement())
   lote           String
+  blood_type String   @default("No data")
   quantidade     Int
   validade       DateTime
   status         String

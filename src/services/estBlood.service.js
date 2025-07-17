@@ -10,6 +10,7 @@
           data: {
             id: loteData.id,
             lote: loteData.lote,
+            blood_type: loteData.blood_type,
             quantidade: loteData.quantidade,
             validade: loteData.validade,
             status: loteData.status,
